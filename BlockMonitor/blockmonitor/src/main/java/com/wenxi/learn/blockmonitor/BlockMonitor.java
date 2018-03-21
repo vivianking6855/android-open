@@ -38,7 +38,7 @@ public class BlockMonitor {
      * @param context the context
      * @return the block monitor
      */
-    public BlockMonitor install(Context context) {
+    public static BlockMonitor install(Context context) {
         return getInstance();
     }
 
