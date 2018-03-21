@@ -38,14 +38,14 @@ public class BlockMonitor {
      * @param context the context
      * @return the block monitor
      */
-    public static BlockMonitor install(Context context) {
+    public BlockMonitor install(Context context) {
         return getInstance();
     }
 
     /**
      * Uninstall, release all resource, delete all related log files
      */
-    public static void uninstall() {
+    public void uninstall() {
 
     }
 

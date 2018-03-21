@@ -17,6 +17,7 @@ public class LogMan {
     private HandlerThread mLogThread = new HandlerThread("dumplog");
     private Handler mHandler;
     private static final long TIME_BLOCK = 1000L;
+    private static long customizedBlock = -1L;
 
     private LogMan() {
     }
@@ -37,9 +38,24 @@ public class LogMan {
         return instance;
     }
 
-    public void start() {
+    /**
+     * init, start HandlerThread and init mHander
+     */
+    public void init() {
         mLogThread.start();
         mHandler = new Handler(mLogThread.getLooper());
+    }
+
+    /**
+     * destroy log man, release res and stop HandlerThread
+     */
+    public void destroy() {
+        try {
+            removeMonitor();
+            mLogThread.quit();
+        } catch (Exception e) {
+            Log.w(Const.BLOCK_TAG, "LogMan stop ex", e);
+        }
     }
 
     // dump log
@@ -55,15 +71,20 @@ public class LogMan {
         }
     };
 
+    /**
+     * post runnable delay TIME_BLOCK or user customized time block
+     */
     public void startMonitor() {
+        final long time = customizedBlock == -1 ? TIME_BLOCK : customizedBlock;
         mHandler.postDelayed(mLogRunnable, TIME_BLOCK);
     }
 
+    /**
+     * remove runnable from Handler message queue
+     */
     public void removeMonitor() {
         mHandler.removeCallbacks(mLogRunnable);
     }
 
-    public void stop() {
-        mLogThread.quit();
-    }
+
 }
