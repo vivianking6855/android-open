@@ -8,23 +8,23 @@ import android.widget.TextView;
 import android.support.v7.widget.RecyclerView;
 
 import com.wenxi.learn.demo.R;
-import com.wenxi.learn.demo.model.AlgorithmModel;
+import com.wenxi.learn.demo.model.HomeModel;
 
 /**
  * Created by vivian on 2017/9/21.
  * recycler view third party template: https://github.com/captain-miao/RecyclerViewUtils
  */
 
-public class AlgorithmRecyclerAdapter extends RecyclerView.Adapter<AlgorithmRecyclerAdapter.RecyclerViewHolder> {
+public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private AlgorithmModel mData;
+    private HomeModel mData;
 
-    public AlgorithmRecyclerAdapter(Context context) {
+    public HomeRecyclerAdapter(Context context) {
         mContext = context;
     }
 
-    public void setData(AlgorithmModel model) {
+    public void setData(HomeModel model) {
         mData = model;
         notifyDataSetChanged();
     }
@@ -32,7 +32,7 @@ public class AlgorithmRecyclerAdapter extends RecyclerView.Adapter<AlgorithmRecy
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RecyclerViewHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.algorithm_recycler_item, parent, false));
+                .inflate(R.layout.home_recycler_item, parent, false));
     }
 
     @Override

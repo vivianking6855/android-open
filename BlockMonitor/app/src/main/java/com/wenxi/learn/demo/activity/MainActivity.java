@@ -5,15 +5,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.wenxi.learn.demo.R;
-import com.wenxi.learn.demo.adapter.AlgorithmRecyclerAdapter;
+import com.wenxi.learn.demo.adapter.HomeRecyclerAdapter;
 import com.wenxi.learn.demo.base.BaseActivity;
-import com.wenxi.learn.demo.model.AlgorithmModel;
+import com.wenxi.learn.demo.model.HomeModel;
 
 import java.util.Arrays;
 
 
 public class MainActivity extends BaseActivity {
-    private AlgorithmRecyclerAdapter mAdapter;
+    private HomeRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +34,13 @@ public class MainActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.algorithm_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new AlgorithmRecyclerAdapter(this);
+        mAdapter = new HomeRecyclerAdapter(this);
         recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     protected void loadData() {
-        AlgorithmModel model = new AlgorithmModel();
+        HomeModel model = new HomeModel();
         model.titleArray = Arrays.asList(getResources().getStringArray(R.array.algorithm_list));
         mAdapter.setData(model);
     }

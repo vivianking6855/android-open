@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="algorithm_list">
-        <item> @string/algorithm_binary_tree </item>
+        <item>@string/home_item</item>
     </string-array>
 
 </resources>

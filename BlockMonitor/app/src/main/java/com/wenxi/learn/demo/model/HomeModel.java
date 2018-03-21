@@ -8,6 +8,6 @@ import java.util.List;
  * model for first Fragment
  */
 
-public class AlgorithmModel implements IDataModel {
+public class HomeModel implements IDataModel {
     public List<String> titleArray;
 }
