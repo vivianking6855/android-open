@@ -10,7 +10,7 @@ import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.Const;
 
 /**
- * Created by vivian on 2018/3/21.
+ * Log Manager
  */
 
 public class LogMan {
@@ -67,24 +67,23 @@ public class LogMan {
     }
 
     // dump log
-    private static Runnable mLogRunnable = new Runnable() {
+    private Runnable mLogRunnable = new Runnable() {
         @Override
         public void run() {
-            StringBuilder sb = new StringBuilder();
-            StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
-            for (StackTraceElement s : stackTrace) {
-                sb.append(s.toString() + "\n");
-            }
-            Log.w(Const.BLOCK_TAG, sb.toString());
+            dealTrace();
         }
     };
+
+    private static void getDumpLog(){
+
+    }
 
     /**
      * post runnable delay TIME_BLOCK or user customized time block
      */
     public void startMonitor() {
         IConfig config = BlockMonitor.getInstance().getConfig();
-        mHandler.postDelayed(mLogRunnable, config.getTimeBlock());
+        mHandler.postDelayed(mLogRunnable, config.getBlockThreshold());
     }
 
     /**
@@ -92,6 +91,33 @@ public class LogMan {
      */
     public void removeMonitor() {
         mHandler.removeCallbacks(mLogRunnable);
+    }
+
+    /**
+     * deal all message and save
+     */
+    private void dealTrace(){
+        dealDeviceInfo();
+        dealStackTrace();
+    }
+
+    /**
+     * deal device info, such cpu,
+     */
+    private void dealDeviceInfo(){
+
+    }
+
+    /**
+     * deal system stack trace
+     */
+    private void dealStackTrace(){
+        StringBuilder sb = new StringBuilder();
+        StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
+        for (StackTraceElement s : stackTrace) {
+            sb.append(s.toString() + "\n");
+        }
+        Log.w(Const.BLOCK_TAG, sb.toString());
     }
 
 }

@@ -1,14 +1,20 @@
 package com.wenxi.learn.blockmonitor.customized;
 
 /**
- * Created by vivian on 2018/3/21.
+ * default config
  */
 
-public class Config implements IConfig{
+public class Config implements IConfig {
     private static final long TIME_BLOCK = 1000L;
+    private static final String PATH = "/block_log/";
 
     @Override
-    public long getTimeBlock() {
+    public long getBlockThreshold() {
         return TIME_BLOCK;
+    }
+
+    @Override
+    public String setLogPath() {
+        return PATH;
     }
 }
