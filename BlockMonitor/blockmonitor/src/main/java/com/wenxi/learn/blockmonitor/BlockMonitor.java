@@ -63,7 +63,10 @@ public class BlockMonitor {
      * stop monitor
      */
     public synchronized void stop() {
-        ChoreographerMonitor.stop();
+        if(isStart) {
+            isStart = false;
+            ChoreographerMonitor.stop();
+        }
     }
 
 }
