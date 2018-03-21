@@ -2,6 +2,9 @@ package com.wenxi.learn.blockmonitor;
 
 import android.content.Context;
 
+import com.wenxi.learn.blockmonitor.customized.Config;
+import com.wenxi.learn.blockmonitor.customized.IConfig;
+
 /**
  * BlockMonitor is singleton mode
  * call install method to initial it
@@ -12,6 +15,8 @@ public class BlockMonitor {
 
     // is start or not
     private boolean isStart = false;
+
+    private IConfig mConfig;
 
     private BlockMonitor() {
     }
@@ -39,6 +44,8 @@ public class BlockMonitor {
      * @return the block monitor
      */
     public static BlockMonitor install(Context context) {
+        BlockMonitor monitor = getInstance();
+        monitor.mConfig = new Config();
         return getInstance();
     }
 
@@ -46,7 +53,7 @@ public class BlockMonitor {
      * Uninstall, release all resource, delete all related log files
      */
     public void uninstall() {
-
+        stop();
     }
 
     /**
@@ -63,10 +70,24 @@ public class BlockMonitor {
      * stop monitor
      */
     public synchronized void stop() {
-        if(isStart) {
+        if (isStart) {
             isStart = false;
             ChoreographerMonitor.stop();
         }
+    }
+
+    /**
+     * set config, such as time block
+     */
+    public synchronized void setConfig(IConfig config) {
+        mConfig = config;
+    }
+
+    /**
+     * get config, such as time block
+     */
+    public synchronized IConfig getConfig() {
+        return mConfig;
     }
 
 }

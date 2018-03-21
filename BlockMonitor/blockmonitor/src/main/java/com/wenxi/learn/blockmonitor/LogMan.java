@@ -5,6 +5,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import com.wenxi.learn.blockmonitor.customized.IConfig;
+
 /**
  * Created by vivian on 2018/3/21.
  */
@@ -16,8 +18,6 @@ public class LogMan {
     // handler thread to get
     private HandlerThread mLogThread = new HandlerThread("dumplog");
     private Handler mHandler;
-    private static final long TIME_BLOCK = 1000L;
-    private static long customizedBlock = -1L;
 
     private LogMan() {
     }
@@ -75,8 +75,8 @@ public class LogMan {
      * post runnable delay TIME_BLOCK or user customized time block
      */
     public void startMonitor() {
-        final long time = customizedBlock == -1 ? TIME_BLOCK : customizedBlock;
-        mHandler.postDelayed(mLogRunnable, TIME_BLOCK);
+        IConfig config = BlockMonitor.getInstance().getConfig();
+        mHandler.postDelayed(mLogRunnable, config.getTimeBlock());
     }
 
     /**
@@ -85,6 +85,5 @@ public class LogMan {
     public void removeMonitor() {
         mHandler.removeCallbacks(mLogRunnable);
     }
-
 
 }
