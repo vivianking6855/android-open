@@ -64,6 +64,6 @@ public class LogMan {
     }
 
     public void stop() {
-
+        mLogThread.quit();
     }
 }

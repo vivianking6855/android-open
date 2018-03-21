@@ -11,6 +11,7 @@ public final class ChoreographerMonitor {
     private static boolean isStop = false;
 
     public static void start() {
+        LogMan.getInstance().start();
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
 //            long lastFrameTimeNanos = 0;
 //            long currentFrameTimeNanos = 0;
@@ -42,6 +43,7 @@ public final class ChoreographerMonitor {
 
     public static void stop() {
         isStop = true;
+        LogMan.getInstance().stop();
     }
 }
 
