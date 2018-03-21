@@ -14,7 +14,12 @@ public class Config implements IConfig {
     }
 
     @Override
-    public String setLogPath() {
+    public String getLogPath() {
         return PATH;
+    }
+
+    @Override
+    public String getAppendix() {
+        return "";
     }
 }
