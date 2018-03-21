@@ -3,6 +3,9 @@ package com.wenxi.learn.blockmonitor;
 import android.util.Log;
 import android.view.Choreographer;
 
+import com.wenxi.learn.blockmonitor.dumplog.LogMan;
+import com.wenxi.learn.blockmonitor.util.Const;
+
 /**
  * ChoreographerMonitor will monitor FrameCallback of Choreographer
  */

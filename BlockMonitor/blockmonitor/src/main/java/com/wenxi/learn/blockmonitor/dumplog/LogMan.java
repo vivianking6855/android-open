@@ -1,11 +1,13 @@
-package com.wenxi.learn.blockmonitor;
+package com.wenxi.learn.blockmonitor.dumplog;
 
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
+import com.wenxi.learn.blockmonitor.util.Const;
 
 /**
  * Created by vivian on 2018/3/21.
