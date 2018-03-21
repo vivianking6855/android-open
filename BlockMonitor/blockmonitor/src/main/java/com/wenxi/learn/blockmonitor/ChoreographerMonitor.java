@@ -6,12 +6,16 @@ import android.view.Choreographer;
 /**
  * ChoreographerMonitor will monitor FrameCallback of Choreographer
  */
-
 public final class ChoreographerMonitor {
     private static boolean isStop = false;
 
+    /**
+     * start frame callback monitor
+     */
     public static void start() {
+        // init log man
         LogMan.getInstance().init();
+        // set frame callback
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
 //            long lastFrameTimeNanos = 0;
 //            long currentFrameTimeNanos = 0;
@@ -35,12 +39,15 @@ public final class ChoreographerMonitor {
                 LogMan.getInstance().removeMonitor();
                 LogMan.getInstance().startMonitor();
 
-                // set call back again,to receive next frame call back
+                // set again to receive next frame callback
                 Choreographer.getInstance().postFrameCallback(this);
             }
         });
     }
 
+    /**
+     * stop frame callback monitor
+     */
     public static void stop() {
         isStop = true;
         LogMan.getInstance().destroy();

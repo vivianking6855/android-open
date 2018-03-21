@@ -16,7 +16,7 @@ public class LogMan {
     private volatile static LogMan instance = null;
 
     // handler thread to get
-    private HandlerThread mLogThread = new HandlerThread("dumplog");
+    private HandlerThread mLogThread;
     private Handler mHandler;
 
     private LogMan() {
@@ -42,6 +42,10 @@ public class LogMan {
      * init, start HandlerThread and init mHander
      */
     public void init() {
+        if (mLogThread != null) {
+            return;
+        }
+        mLogThread = new HandlerThread("dumplog");
         mLogThread.start();
         mHandler = new Handler(mLogThread.getLooper());
     }
@@ -51,8 +55,10 @@ public class LogMan {
      */
     public void destroy() {
         try {
-            removeMonitor();
-            mLogThread.quit();
+            if (mLogThread != null) {
+                removeMonitor();
+                mLogThread.quit();
+            }
         } catch (Exception e) {
             Log.w(Const.BLOCK_TAG, "LogMan stop ex", e);
         }
