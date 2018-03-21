@@ -7,7 +7,11 @@ import android.content.Context;
  * call install method to initial it
  */
 public class BlockMonitor {
+    // singleton instance
     private volatile static BlockMonitor instance = null;
+
+    // is start or not
+    private boolean isStart = false;
 
     private BlockMonitor() {
     }
@@ -48,15 +52,18 @@ public class BlockMonitor {
     /**
      * start monitor frame
      */
-    public void start() {
-
+    public synchronized void start() {
+        if (!isStart) {
+            isStart = true;
+            ChoreographerMonitor.start();
+        }
     }
 
     /**
      * stop monitor
      */
-    public void stop() {
-
+    public synchronized void stop() {
+        ChoreographerMonitor.stop();
     }
 
 }
