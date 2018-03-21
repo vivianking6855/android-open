@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Algorithm</string>
+
+    <string name="algorithm_binary_tree">二叉树</string>
+</resources>
