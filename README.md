@@ -12,7 +12,7 @@ Android版本：Android 4.1 API 16以上支持
 
 默认卡顿阈值：80ms = 5*16.6ms
 
-默认抓取log频率：，即两次Frame刷新之间获取 次
+默认抓取log频率：即两次Frame刷新之间获取 次
 
 # 使用
 

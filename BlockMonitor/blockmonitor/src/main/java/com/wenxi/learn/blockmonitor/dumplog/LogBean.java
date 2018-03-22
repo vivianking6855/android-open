@@ -61,7 +61,6 @@ public class LogBean {
     public static LogBean init() {
         LogBean bean = new LogBean();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
-        ;
         bean.model = Build.MODEL;
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
         bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(BlockMonitor.getContext()));

@@ -19,7 +19,7 @@ public final class ChoreographerMonitor {
      */
     public static void start() {
         // init log man
-        LogMan.getInstance().init();
+        LogMan.getInstance().start();
         // set frame callback
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
             long lastFrameTimeNanos = 0;
@@ -55,7 +55,7 @@ public final class ChoreographerMonitor {
      */
     public static void stop() {
         isStop = true;
-        LogMan.getInstance().destroy();
+        LogMan.getInstance().stop();
     }
 }
 

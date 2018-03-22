@@ -5,7 +5,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
-import com.open.utislib.device.DeviceUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.Const;
@@ -22,6 +21,8 @@ public class LogMan {
     private HandlerThread mLogThread;
     private Handler mHandler;
 
+    private LogBean mLogBean;
+
     private LogMan() {
     }
 
@@ -32,7 +33,7 @@ public class LogMan {
      */
     public static LogMan getInstance() {
         if (instance == null) {
-            synchronized (BlockMonitor.class) {
+            synchronized (LogMan.class) {
                 if (instance == null) {
                     instance = new LogMan();
                 }
@@ -42,9 +43,18 @@ public class LogMan {
     }
 
     /**
-     * init, start HandlerThread and init mHander
+     * init data
      */
     public void init() {
+        if (mLogBean == null) {
+            mLogBean = new LogBean();
+        }
+    }
+
+    /**
+     * start HandlerThread and init mHander
+     */
+    public void start() {
         if (mLogThread != null) {
             return;
         }
@@ -56,7 +66,7 @@ public class LogMan {
     /**
      * destroy log man, release res and stop HandlerThread
      */
-    public void destroy() {
+    public void stop() {
         try {
             if (mLogThread != null) {
                 removeMonitor();
@@ -117,8 +127,6 @@ public class LogMan {
      * deal device dynamic info, such cpu usage, memory
      */
     private void dealDeviceDynamicInfo() {
-        int usableMemory = DeviceUtils.getDeviceUsableMemory(BlockMonitor.getInstance().context);
-        long maxMemory = DeviceUtils.getMaxMemory();
     }
 
     /**
@@ -131,6 +139,10 @@ public class LogMan {
             sb.append(s.toString() + "\n");
         }
         Log.w(Const.BLOCK_TAG, sb.toString());
+    }
+
+    private LogBean getLogBean() {
+        return mLogBean;
     }
 
 }

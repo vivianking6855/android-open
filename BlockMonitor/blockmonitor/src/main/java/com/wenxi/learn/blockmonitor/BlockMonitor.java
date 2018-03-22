@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
+import com.wenxi.learn.blockmonitor.dumplog.LogBean;
+import com.wenxi.learn.blockmonitor.dumplog.LogMan;
 
 /**
  * BlockMonitor is singleton mode
@@ -47,6 +49,7 @@ public class BlockMonitor {
         BlockMonitor monitor = getInstance();
         monitor.mConfig = new Config();
         monitor.mContext = context;
+        LogMan.getInstance().init();
         return getInstance();
     }
 
