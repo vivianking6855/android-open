@@ -36,6 +36,7 @@ public final class ChoreographerMonitor {
                 }
                 currentFrameTimeNanos = frameTimeNanos;
                 long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos-lastFrameTimeNanos, TimeUnit.NANOSECONDS);
+                lastFrameTimeNanos = currentFrameTimeNanos;
                 if (diffMs > 16.6f) {
                     double droppedCount = diffMs / 16.6;
                 }

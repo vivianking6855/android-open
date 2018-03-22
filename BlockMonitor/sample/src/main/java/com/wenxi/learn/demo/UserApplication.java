@@ -3,6 +3,8 @@ package com.wenxi.learn.demo;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.wenxi.learn.blockmonitor.BlockMonitor;
+
 /**
  * Created by vivian on 2017/11/13.
  * User customized Application
@@ -29,6 +31,7 @@ public class UserApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        BlockMonitor.getInstance().install(this).start();
     }
 
     /**

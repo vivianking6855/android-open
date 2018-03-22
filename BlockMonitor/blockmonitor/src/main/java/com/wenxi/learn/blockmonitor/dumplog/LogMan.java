@@ -16,17 +16,17 @@ import com.wenxi.learn.blockmonitor.util.UserFileUtils;
  */
 
 public class LogMan {
+    private static final int STACKTRACE_DURATION = 52;
     // singleton instance
     private volatile static LogMan instance = null;
-
     // handler thread to get
     private HandlerThread mLogThread;
     private Handler mHandler;
+    private StringBuilder stackTraceBuilder = new StringBuilder();
+
 
     private LogBean mLogBean;
-
-    private LogMan() {
-    }
+    private LogMan() {}
 
     /**
      * Gets instance.
@@ -72,6 +72,7 @@ public class LogMan {
         try {
             if (mLogThread != null) {
                 removeMonitor();
+                mHandler.removeCallbacks(stackTraceRunnable);
                 mLogThread.quit();
             }
         } catch (Exception e) {
@@ -84,13 +85,41 @@ public class LogMan {
         @Override
         public void run() {
             dealTrace();
+            dealTrace();
+            dumpStackTrace2LogCat();
+            clearCache();
         }
     };
+
+    private Runnable stackTraceRunnable = new Runnable() {
+        @Override
+        public void run() {
+            dealTrace();
+            if(mLogThread.isAlive()) {
+                mHandler.postDelayed(this, STACKTRACE_DURATION);
+            }
+        }
+    };
+
+    private void clearCache(){
+     //   stackTraceBuilder.delete(0,stackTraceBuilder.length());
+    }
+
+    private void dumpStackTrace2LogCat(){
+        if(stackTraceBuilder!=null){
+            Log.w(Const.BLOCK_TAG, stackTraceBuilder.toString());
+        }
+    }
+
+    private static void getDumpLog(){
+
+    }
 
     /**
      * post runnable delay TIME_BLOCK or user customized time block
      */
     public void startMonitor() {
+        mHandler.post(stackTraceRunnable);
         IConfig config = BlockMonitor.getInstance().getConfig();
         mHandler.postDelayed(mLogRunnable, config.getBlockThreshold());
     }
@@ -99,6 +128,8 @@ public class LogMan {
      * remove runnable from Handler message queue
      */
     public void removeMonitor() {
+        clearCache();
+        mHandler.removeCallbacks(stackTraceRunnable);
         mHandler.removeCallbacks(mLogRunnable);
     }
 
@@ -114,8 +145,8 @@ public class LogMan {
      * deal all dynamic message and save
      */
     private void dealDynamicTrace() {
-        dealDeviceDynamicInfo();
         dealStackTrace();
+        dealDeviceDynamicInfo();
     }
 
     /**
@@ -136,16 +167,13 @@ public class LogMan {
      * deal system stack trace
      */
     private void dealStackTrace() {
-        StringBuilder sb = new StringBuilder();
         StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
         for (StackTraceElement s : stackTrace) {
-            sb.append(s.toString() + "\n");
+            stackTraceBuilder.append(s.toString()).append("\n");
         }
-        Log.w(Const.BLOCK_TAG, sb.toString());
     }
 
     private LogBean getLogBean() {
         return mLogBean;
     }
-
 }
