@@ -16,17 +16,20 @@ import com.wenxi.learn.blockmonitor.util.UserFileUtils;
  */
 
 public class LogMan {
-    private static final int STACKTRACE_DURATION = 52;
     // singleton instance
     private volatile static LogMan instance = null;
     // handler thread to get
     private HandlerThread mLogThread;
     private Handler mHandler;
+    // system trace capture frequency
+    private static final int STACKTRACE_DURATION = 52; // 52ms
     private StringBuilder stackTraceBuilder = new StringBuilder();
 
-
+    // log bean, all log information here
     private LogBean mLogBean;
-    private LogMan() {}
+
+    // log already start or not
+    private boolean isRunning;
 
     /**
      * Gets instance.
@@ -57,12 +60,16 @@ public class LogMan {
      * start HandlerThread and init mHander
      */
     public void start() {
-        if (mLogThread != null) {
+        if (isRunning) {
             return;
         }
+        // start log thread
         mLogThread = new HandlerThread("dumplog");
         mLogThread.start();
         mHandler = new Handler(mLogThread.getLooper());
+
+        // set status
+        isRunning = true;
     }
 
     /**
@@ -75,51 +82,19 @@ public class LogMan {
                 mHandler.removeCallbacks(stackTraceRunnable);
                 mLogThread.quit();
             }
+            isRunning = false;
         } catch (Exception e) {
             Log.w(Const.BLOCK_TAG, "LogMan stop ex", e);
         }
-    }
-
-    // dump log
-    private Runnable mLogRunnable = new Runnable() {
-        @Override
-        public void run() {
-            dealTrace();
-            dealTrace();
-            dumpStackTrace2LogCat();
-            clearCache();
-        }
-    };
-
-    private Runnable stackTraceRunnable = new Runnable() {
-        @Override
-        public void run() {
-            dealTrace();
-            if(mLogThread.isAlive()) {
-                mHandler.postDelayed(this, STACKTRACE_DURATION);
-            }
-        }
-    };
-
-    private void clearCache(){
-     //   stackTraceBuilder.delete(0,stackTraceBuilder.length());
-    }
-
-    private void dumpStackTrace2LogCat(){
-        if(stackTraceBuilder!=null){
-            Log.w(Const.BLOCK_TAG, stackTraceBuilder.toString());
-        }
-    }
-
-    private static void getDumpLog(){
-
     }
 
     /**
      * post runnable delay TIME_BLOCK or user customized time block
      */
     public void startMonitor() {
+        // post to start capture system trace, not delay at the first time
         mHandler.post(stackTraceRunnable);
+        // post log runnable to record block
         IConfig config = BlockMonitor.getInstance().getConfig();
         mHandler.postDelayed(mLogRunnable, config.getBlockThreshold());
     }
@@ -131,6 +106,41 @@ public class LogMan {
         clearCache();
         mHandler.removeCallbacks(stackTraceRunnable);
         mHandler.removeCallbacks(mLogRunnable);
+    }
+
+    // log runnable to record block
+    private Runnable mLogRunnable = new Runnable() {
+        @Override
+        public void run() {
+            dealTrace();
+            dealTrace();
+            // deal stack trace
+            dumpStackTrace2LogCat();
+            clearCache();
+        }
+    };
+
+    // post to start capture system trace
+    // no delay at the first time, only delay for next time
+    private Runnable stackTraceRunnable = new Runnable() {
+        @Override
+        public void run() {
+            dealTrace();
+            if (mLogThread.isAlive()) {
+                // post to start capture system trace, delay for next time
+                mHandler.postDelayed(this, STACKTRACE_DURATION);
+            }
+        }
+    };
+
+    private void clearCache() {
+        //   stackTraceBuilder.delete(0,stackTraceBuilder.length());
+    }
+
+    private void dumpStackTrace2LogCat() {
+        if (stackTraceBuilder != null) {
+            Log.w(Const.BLOCK_TAG, stackTraceBuilder.toString());
+        }
     }
 
     /**
