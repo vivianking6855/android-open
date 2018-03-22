@@ -1,2 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wenxi.learn.blockmonitor" />
+    package="com.wenxi.learn.blockmonitor">
+
+    <!-- save the heap dumps -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- get IMEI -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application />
+</manifest>

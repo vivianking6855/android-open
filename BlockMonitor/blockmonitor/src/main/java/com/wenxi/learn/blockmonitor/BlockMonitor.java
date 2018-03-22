@@ -14,7 +14,7 @@ public class BlockMonitor {
     private volatile static BlockMonitor instance = null;
     // is start or not
     private boolean isStart = false;
-    public Context context;
+    public Context mContext;
 
     private IConfig mConfig;
 
@@ -46,7 +46,7 @@ public class BlockMonitor {
     public static BlockMonitor install(Context context) {
         BlockMonitor monitor = getInstance();
         monitor.mConfig = new Config();
-        monitor.context = context;
+        monitor.mContext = context;
         return getInstance();
     }
 
@@ -89,6 +89,13 @@ public class BlockMonitor {
      */
     public synchronized IConfig getConfig() {
         return mConfig;
+    }
+
+    /**
+     * get context, such as time block
+     */
+    public static Context getContext(){
+        return getInstance().mContext;
     }
 
 }
