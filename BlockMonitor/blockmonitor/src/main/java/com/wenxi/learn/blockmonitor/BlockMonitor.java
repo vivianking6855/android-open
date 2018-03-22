@@ -1,6 +1,7 @@
 package com.wenxi.learn.blockmonitor;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
@@ -12,9 +13,9 @@ import com.wenxi.learn.blockmonitor.customized.IConfig;
 public class BlockMonitor {
     // singleton instance
     private volatile static BlockMonitor instance = null;
-
     // is start or not
     private boolean isStart = false;
+    public Context context;
 
     private IConfig mConfig;
 
@@ -46,6 +47,7 @@ public class BlockMonitor {
     public static BlockMonitor install(Context context) {
         BlockMonitor monitor = getInstance();
         monitor.mConfig = new Config();
+        monitor.context = context;
         return getInstance();
     }
 

@@ -5,6 +5,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import com.open.utislib.device.DeviceUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.Const;
@@ -74,10 +75,6 @@ public class LogMan {
         }
     };
 
-    private static void getDumpLog(){
-
-    }
-
     /**
      * post runnable delay TIME_BLOCK or user customized time block
      */
@@ -96,22 +93,38 @@ public class LogMan {
     /**
      * deal all message and save
      */
-    private void dealTrace(){
-        dealDeviceInfo();
+    private void dealTrace() {
+        dealDeviceStickyInfo();
+        dealDynamicTrace();
+    }
+
+    /**
+     * deal all dynamic message and save
+     */
+    private void dealDynamicTrace() {
+        dealDeviceDynamicInfo();
         dealStackTrace();
     }
 
     /**
-     * deal device info, such cpu,
+     * deal device sticky info, such as cpu count
      */
-    private void dealDeviceInfo(){
+    private void dealDeviceStickyInfo() {
+        int cpu_count = Runtime.getRuntime().availableProcessors();
+    }
 
+    /**
+     * deal device dynamic info, such cpu usage, memory
+     */
+    private void dealDeviceDynamicInfo() {
+        int usableMemory = DeviceUtils.getDeviceUsableMemory(BlockMonitor.getInstance().context);
+        long maxMemory = DeviceUtils.getMaxMemory();
     }
 
     /**
      * deal system stack trace
      */
-    private void dealStackTrace(){
+    private void dealStackTrace() {
         StringBuilder sb = new StringBuilder();
         StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
         for (StackTraceElement s : stackTrace) {

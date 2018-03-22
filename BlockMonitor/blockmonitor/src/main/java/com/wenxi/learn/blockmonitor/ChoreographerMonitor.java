@@ -6,6 +6,8 @@ import android.view.Choreographer;
 import com.wenxi.learn.blockmonitor.dumplog.LogMan;
 import com.wenxi.learn.blockmonitor.util.Const;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * ChoreographerMonitor will monitor FrameCallback of Choreographer
  */
@@ -20,8 +22,8 @@ public final class ChoreographerMonitor {
         LogMan.getInstance().init();
         // set frame callback
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
-//            long lastFrameTimeNanos = 0;
-//            long currentFrameTimeNanos = 0;
+            long lastFrameTimeNanos = 0;
+            long currentFrameTimeNanos = 0;
 
             @Override
             public void doFrame(long frameTimeNanos) {
@@ -29,14 +31,14 @@ public final class ChoreographerMonitor {
                     Log.d(Const.BLOCK_TAG, "ChoreographerMonitor stop");
                     return;
                 }
-//                if (lastFrameTimeNanos == 0) {
-//                    lastFrameTimeNanos = frameTimeNanos;
-//                }
-//                currentFrameTimeNanos = frameTimeNanos;
-//                    long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos-lastFrameTimeNanos, TimeUnit.NANOSECONDS);
-//                    if (diffMs > 16.6f) {
-//                        long droppedCount = (long)diffMs / 16.6;
-//                    }
+                if (lastFrameTimeNanos == 0) {
+                    lastFrameTimeNanos = frameTimeNanos;
+                }
+                currentFrameTimeNanos = frameTimeNanos;
+                long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos-lastFrameTimeNanos, TimeUnit.NANOSECONDS);
+                if (diffMs > 16.6f) {
+                    double droppedCount = diffMs / 16.6;
+                }
                 // if already has log message, remove it.
                 // if not remove it at TIME_BLOCK(default 1s), block dump message will show
                 LogMan.getInstance().removeMonitor();
