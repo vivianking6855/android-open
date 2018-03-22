@@ -31,19 +31,18 @@ public class LogBean {
     // empty IMEI
     private static final String EMPTY_IMEI = "empty_imei";
     // file line header for each type
-    private static final String HEAD_MODEL = "[model";
-    private static final String HEAD_API = "[api-level]";
-    private static final String HEAD_IMEI = "[imei]";
-    public static final String HEAD_UID = "[uid]";
-    private static final String HEAD_CPU_CORE = "[cpu-core]";
-    private static final String HEAD_CPU_BUSY = "[cpu-busy]";
-    private static final String HEAD_TIME_COST = "[time]";
-    private static final String HEAD_THREAD_TIME_COST = "[thread-time]";
-    private static final String HEAD_TIME_COST_START = "[time-start]";
-    private static final String HEAD_TIME_COST_END = "[time-end]";
-    private static final String HEAD_STACK = "[stack]";
-    private static final String HEAD_TOTAL_MEMORY = "[total memory]";
-    private static final String HEAD_FREE_MEMORY = "[free memory]";
+    private static final String HEAD_MODEL = "[model] ";
+    private static final String HEAD_API = "[api-level] ";
+    private static final String HEAD_IMEI = "[imei] ";
+    private static final String HEAD_CPU_CORE = "[cpu-core] ";
+    private static final String HEAD_CPU_BUSY = "[cpu-busy] ";
+    private static final String HEAD_TIME_COST = "[time] ";
+    private static final String HEAD_THREAD_TIME_COST = "[thread-time] ";
+    private static final String HEAD_TIME_COST_START = "[time-start] ";
+    private static final String HEAD_TIME_COST_END = "[time-end] ";
+    private static final String HEAD_STACK = "[stack] ";
+    private static final String HEAD_TOTAL_MEMORY = "[total memory] ";
+    private static final String HEAD_FREE_MEMORY = "[free memory] ";
 
     private long timeCost;
     private long threadTimeCost;
@@ -98,6 +97,7 @@ public class LogBean {
         headStr.append(HEAD_MODEL).append(model).append(SEPARATOR);
         headStr.append(HEAD_API).append(apiLevel).append(SEPARATOR);
         headStr.append(HEAD_IMEI).append(imei).append(SEPARATOR);
+        headStr.append(HEAD_CPU_CORE).append(cpuCore).append(SEPARATOR);
         headStr.append(HEAD_FREE_MEMORY).append(freeMemory).append(SEPARATOR);
         headStr.append(HEAD_TOTAL_MEMORY).append(totalMemory).append(SEPARATOR);
 

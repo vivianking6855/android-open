@@ -73,6 +73,8 @@ public class LogMan {
 
         // set status
         isRunning = true;
+        // capture log when start
+        dealStickyLog();
     }
 
     /**
@@ -100,6 +102,8 @@ public class LogMan {
         // post log runnable to record block
         IConfig config = BlockMonitor.getInstance().getConfig();
         mHandler.postDelayed(mLogRunnable, config.getBlockThreshold());
+        // capture dynamic log when start monitor
+        dealDynamicLog();
     }
 
     /**
@@ -115,10 +119,9 @@ public class LogMan {
     private Runnable mLogRunnable = new Runnable() {
         @Override
         public void run() {
-            dealTrace();
-            dealTrace();
+            Log.d(Const.BLOCK_TAG, "LogMan get block! dump them!");
             // deal stack trace
-            dumpStackTrace2LogCat();
+            dealDynamicLog();
             clearCache();
         }
     };
@@ -128,7 +131,7 @@ public class LogMan {
     private Runnable stackTraceRunnable = new Runnable() {
         @Override
         public void run() {
-            dealTrace();
+            dealDynamicLog();
             if (mLogThread.isAlive()) {
                 // post to start capture system trace, delay for next time
                 mHandler.postDelayed(this, STACKTRACE_DURATION);
@@ -140,32 +143,20 @@ public class LogMan {
         //   stackTraceBuilder.delete(0,stackTraceBuilder.length());
     }
 
-    private void dumpStackTrace2LogCat() {
-        if (stackTraceBuilder != null) {
-            Log.w(Const.BLOCK_TAG, stackTraceBuilder.toString());
-        }
-    }
-
-    /**
-     * deal all message and save
-     */
-    private void dealTrace() {
-        dealHeaderInfo();
-        dealDynamicTrace();
-    }
-
     /**
      * deal all dynamic message and save
      */
-    private void dealDynamicTrace() {
+    private void dealDynamicLog() {
         dealStackTrace();
-        dealDeviceDynamicInfo();
+        dealDynamicDeviceInfo();
     }
 
     /**
      * deal device sticky info, such as cpu count
      */
-    private void dealHeaderInfo() {
+    private void dealStickyLog() {
+        Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
+        Log.d(Const.BLOCK_TAG, "LogMan getLogPath: " + getLogPath());
         FileUtils.writeFileFromString(mLogBean.getHeaderString(),
                 getLogPath(), false);
     }
@@ -173,7 +164,7 @@ public class LogMan {
     /**
      * deal device dynamic info, such cpu usage, memory
      */
-    private void dealDeviceDynamicInfo() {
+    private void dealDynamicDeviceInfo() {
     }
 
     /**
@@ -183,6 +174,15 @@ public class LogMan {
         StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
         for (StackTraceElement s : stackTrace) {
             stackTraceBuilder.append(s.toString()).append("\n");
+        }
+    }
+
+    /**
+     * only dump system trace to logcat
+     */
+    private void dumpStackTrace2LogCat() {
+        if (stackTraceBuilder != null) {
+            Log.w(Const.BLOCK_TAG, stackTraceBuilder.toString());
         }
     }
 

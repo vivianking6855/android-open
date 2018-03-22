@@ -1,10 +1,12 @@
 package com.wenxi.learn.blockmonitor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.dumplog.LogMan;
+import com.wenxi.learn.blockmonitor.util.Const;
 
 /**
  * BlockMonitor is singleton mode
@@ -45,6 +47,7 @@ public class BlockMonitor {
      * @return the block monitor
      */
     public static BlockMonitor install(Context context) {
+        Log.d(Const.BLOCK_TAG,"BlockMonitor install");
         BlockMonitor monitor = getInstance();
         monitor.init(context);
         return monitor;
@@ -64,6 +67,7 @@ public class BlockMonitor {
      * Uninstall, release all resource, delete all related log files
      */
     public void uninstall() {
+        Log.d(Const.BLOCK_TAG,"BlockMonitor uninstall");
         stop();
     }
 
@@ -73,6 +77,7 @@ public class BlockMonitor {
     public synchronized void start() {
         if (!isStart) {
             isStart = true;
+            Log.d(Const.BLOCK_TAG,"BlockMonitor start");
             ChoreographerMonitor.start();
         }
     }
@@ -83,6 +88,7 @@ public class BlockMonitor {
     public synchronized void stop() {
         if (isStart) {
             isStart = false;
+            Log.d(Const.BLOCK_TAG,"BlockMonitor stop");
             ChoreographerMonitor.stop();
         }
     }
