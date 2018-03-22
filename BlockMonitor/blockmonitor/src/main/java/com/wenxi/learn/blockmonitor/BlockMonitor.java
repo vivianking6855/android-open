@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
-import com.wenxi.learn.blockmonitor.dumplog.LogBean;
 import com.wenxi.learn.blockmonitor.dumplog.LogMan;
 
 /**
@@ -14,11 +13,11 @@ import com.wenxi.learn.blockmonitor.dumplog.LogMan;
 public class BlockMonitor {
     // singleton instance
     private volatile static BlockMonitor instance = null;
+    // config for dump information
+    private static IConfig sConfig;
     // is start or not
     private boolean isStart = false;
     public Context mContext;
-
-    private IConfig mConfig;
 
     private BlockMonitor() {
     }
@@ -47,9 +46,11 @@ public class BlockMonitor {
      */
     public static BlockMonitor install(Context context) {
         BlockMonitor monitor = getInstance();
-        monitor.mConfig = new Config();
         monitor.mContext = context;
         LogMan.getInstance().init();
+        if (sConfig == null) {
+            sConfig = new Config();
+        }
         return getInstance();
     }
 
@@ -83,21 +84,21 @@ public class BlockMonitor {
     /**
      * set config, such as time block
      */
-    public synchronized void setConfig(IConfig config) {
-        mConfig = config;
+    public static void setConfig(IConfig config) {
+        sConfig = config;
     }
 
     /**
      * get config, such as time block
      */
-    public synchronized IConfig getConfig() {
-        return mConfig;
+    public static IConfig getConfig() {
+        return sConfig;
     }
 
     /**
      * get context, such as time block
      */
-    public static Context getContext(){
+    public static Context getContext() {
         return getInstance().mContext;
     }
 

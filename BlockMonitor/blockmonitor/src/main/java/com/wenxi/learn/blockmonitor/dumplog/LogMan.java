@@ -5,9 +5,11 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import com.open.utislib.file.FileUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.Const;
+import com.wenxi.learn.blockmonitor.util.UserFileUtils;
 
 /**
  * Log Manager
@@ -104,7 +106,7 @@ public class LogMan {
      * deal all message and save
      */
     private void dealTrace() {
-        dealDeviceStickyInfo();
+        dealHeaderInfo();
         dealDynamicTrace();
     }
 
@@ -119,8 +121,9 @@ public class LogMan {
     /**
      * deal device sticky info, such as cpu count
      */
-    private void dealDeviceStickyInfo() {
-        int cpu_count = Runtime.getRuntime().availableProcessors();
+    private void dealHeaderInfo() {
+        FileUtils.writeFileFromString(mLogBean.getHeaderString(),
+                UserFileUtils.getLogPath(), false);
     }
 
     /**
