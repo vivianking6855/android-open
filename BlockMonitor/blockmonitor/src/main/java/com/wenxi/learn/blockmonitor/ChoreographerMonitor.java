@@ -11,13 +11,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * ChoreographerMonitor will monitor FrameCallback of Choreographer
  */
-public final class ChoreographerMonitor {
+final class ChoreographerMonitor {
     private static boolean isStop = false;
 
     /**
      * start frame callback monitor
      */
-    public static void start() {
+    static void start() {
         // start log man
         LogMan.getInstance().start();
         // set frame callback
@@ -35,10 +35,11 @@ public final class ChoreographerMonitor {
                     lastFrameTimeNanos = frameTimeNanos;
                 }
                 currentFrameTimeNanos = frameTimeNanos;
-                long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos-lastFrameTimeNanos, TimeUnit.NANOSECONDS);
+                long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos - lastFrameTimeNanos, TimeUnit.NANOSECONDS);
                 lastFrameTimeNanos = currentFrameTimeNanos;
                 if (diffMs > 16.6f) {
                     double droppedCount = diffMs / 16.6;
+                    Log.d(Const.BLOCK_TAG, "ChoreographerMonitor droppedCount = " + droppedCount);
                 }
                 // if already has log message, remove it.
                 // if not remove it at TIME_BLOCK(default 1s), block dump message will show
@@ -54,7 +55,7 @@ public final class ChoreographerMonitor {
     /**
      * stop frame callback monitor
      */
-    public static void stop() {
+    static void stop() {
         isStop = true;
         LogMan.getInstance().stop();
     }

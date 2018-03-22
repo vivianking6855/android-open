@@ -55,10 +55,7 @@ public class LogBean {
     private static StringBuilder dynamicStr = new StringBuilder();
     private static StringBuilder stackStr = new StringBuilder();
 
-    public LogBean() {
-    }
-
-    public LogBean init() {
+    public static LogBean build() {
         LogBean bean = new LogBean();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;

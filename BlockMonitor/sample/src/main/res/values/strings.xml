@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Demo</string>
+    <string name="app_name">BlockSample</string>
 
     <string name="home_item">Item</string>
 </resources>

@@ -54,8 +54,7 @@ public class LogMan {
      */
     public void init() {
         if (mLogBean == null) {
-            mLogBean = new LogBean();
-            mLogBean.init();
+            mLogBean = LogBean.build();
         }
     }
 
@@ -122,6 +121,8 @@ public class LogMan {
             Log.d(Const.BLOCK_TAG, "LogMan get block! dump them!");
             // deal stack trace
             dealDynamicLog();
+            // debug
+            dumpStackTrace2LogCat();
             clearCache();
         }
     };
