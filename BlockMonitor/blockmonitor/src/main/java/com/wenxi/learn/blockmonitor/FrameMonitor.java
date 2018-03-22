@@ -9,9 +9,9 @@ import com.wenxi.learn.blockmonitor.util.Const;
 import java.util.concurrent.TimeUnit;
 
 /**
- * ChoreographerMonitor will monitor FrameCallback of Choreographer
+ * FrameMonitor will monitor FrameCallback of Choreographer
  */
-final class ChoreographerMonitor {
+final class FrameMonitor {
     private static boolean isStop = false;
 
     /**
@@ -28,7 +28,7 @@ final class ChoreographerMonitor {
             @Override
             public void doFrame(long frameTimeNanos) {
                 if (isStop) {
-                    Log.d(Const.BLOCK_TAG, "ChoreographerMonitor stop");
+                    Log.d(Const.BLOCK_TAG, "FrameMonitor stop");
                     return;
                 }
                 if (lastFrameTimeNanos == 0) {
@@ -39,7 +39,7 @@ final class ChoreographerMonitor {
                 lastFrameTimeNanos = currentFrameTimeNanos;
                 if (diffMs > 16.6f) {
                     double droppedCount = diffMs / 16.6;
-                    Log.d(Const.BLOCK_TAG, "ChoreographerMonitor droppedCount = " + droppedCount);
+                    Log.d(Const.BLOCK_TAG, "FrameMonitor droppedCount = " + droppedCount);
                 }
                 // if already has log message, remove it.
                 // if not remove it at TIME_BLOCK(default 1s), block dump message will show

@@ -80,7 +80,7 @@ public class BlockMonitor {
         if (!isStart) {
             isStart = true;
             Log.d(Const.BLOCK_TAG,"BlockMonitor start");
-            ChoreographerMonitor.start();
+            FrameMonitor.start();
         }
     }
 
@@ -91,7 +91,7 @@ public class BlockMonitor {
         if (isStart) {
             isStart = false;
             Log.d(Const.BLOCK_TAG,"BlockMonitor stop");
-            ChoreographerMonitor.stop();
+            FrameMonitor.stop();
         }
     }
 
