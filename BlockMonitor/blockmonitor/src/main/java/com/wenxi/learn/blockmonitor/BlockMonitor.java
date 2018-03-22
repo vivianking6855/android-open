@@ -1,5 +1,6 @@
 package com.wenxi.learn.blockmonitor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -14,12 +15,13 @@ import com.wenxi.learn.blockmonitor.util.Const;
  */
 public class BlockMonitor {
     // singleton instance
+    @SuppressLint("StaticFieldLeak")
     private volatile static BlockMonitor instance = null;
     // config for dump information
     private IConfig mConfig;
     // is start or not
     private boolean isStart = false;
-    public Context mContext;
+    private Context mContext;
 
     private BlockMonitor() {
     }

@@ -51,11 +51,11 @@ public class LogBean {
     private boolean cpuBusy;
     private ArrayList<String> stackList = new ArrayList<>();
 
-    private static StringBuilder headStr = new StringBuilder();
-    private static StringBuilder dynamicStr = new StringBuilder();
-    private static StringBuilder stackStr = new StringBuilder();
+    private StringBuilder headStr = new StringBuilder();
+    private StringBuilder dynamicStr = new StringBuilder();
+    private StringBuilder stackStr = new StringBuilder();
 
-    public static LogBean build() {
+    static LogBean build() {
         LogBean bean = new LogBean();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;
@@ -68,12 +68,12 @@ public class LogBean {
         return bean;
     }
 
-    public LogBean setStackEntries(ArrayList<String> threadStackEntries) {
+    LogBean setStackEntries(ArrayList<String> threadStackEntries) {
         stackList = threadStackEntries;
         return this;
     }
 
-    public LogBean setCost(long realTimeStart, long realTimeEnd, long threadTimeStart, long threadTimeEnd) {
+    LogBean setCost(long realTimeStart, long realTimeEnd, long threadTimeStart, long threadTimeEnd) {
         timeCost = realTimeEnd - realTimeStart;
         threadTimeCost = threadTimeEnd - threadTimeStart;
         timeStart = TIME_FORMATTER.format(realTimeStart);
@@ -86,7 +86,7 @@ public class LogBean {
      *
      * @return the header string
      */
-    public String getHeaderString() {
+    String getHeaderString() {
         if (headStr.length() > 0) {
             headStr.delete(0, headStr.length() - 1);
         }
@@ -101,7 +101,7 @@ public class LogBean {
         return headStr.toString();
     }
 
-    public String getDynamicString() {
+    String getDynamicString() {
         if (dynamicStr.length() > 0) {
             dynamicStr.delete(0, dynamicStr.length() - 1);
         }
@@ -109,9 +109,9 @@ public class LogBean {
         return dynamicStr.toString();
     }
 
-    public String getStackString() {
+    String getStackString() {
         if (stackStr.length() > 0) {
-            stackStr.delete(0, stackStr.length() - 1);
+            stackStr.delete(0, stackStr.length());
         }
         stackStr.append(HEAD_TIME_COST).append(timeCost).append(SEPARATOR);
         stackStr.append(HEAD_THREAD_TIME_COST).append(threadTimeCost).append(SEPARATOR);
@@ -126,7 +126,6 @@ public class LogBean {
             }
             stackStr.append(HEAD_STACK).append(temp.toString()).append(SEPARATOR);
         }
-
         return stackStr.toString();
     }
 

@@ -141,7 +141,7 @@ public class LogMan {
     };
 
     private void clearCache() {
-        //   stackTraceBuilder.delete(0,stackTraceBuilder.length());
+           stackTraceBuilder.delete(0,stackTraceBuilder.length());
     }
 
     /**

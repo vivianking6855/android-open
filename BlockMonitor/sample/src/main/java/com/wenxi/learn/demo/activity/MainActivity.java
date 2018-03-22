@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.demo.R;
 import com.wenxi.learn.demo.adapter.HomeRecyclerAdapter;
 import com.wenxi.learn.demo.base.BaseActivity;
@@ -54,6 +53,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        BlockMonitor.getInstance().stop();
+       // BlockMonitor.getInstance().stop();
     }
 }
