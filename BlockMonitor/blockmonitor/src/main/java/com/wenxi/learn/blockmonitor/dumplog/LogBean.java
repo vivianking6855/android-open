@@ -3,12 +3,12 @@ package com.wenxi.learn.blockmonitor.dumplog;
 import android.content.Context;
 import android.os.Build;
 
+import com.open.utislib.time.TimeUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.util.DeviceUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * LogInfo, all log bean here
@@ -23,14 +23,16 @@ public class LogBean {
     private String freeMemory;
     private String totalMemory;
 
-    // time format
+    // default time format  "yyyy-MM-dd HH:mm:ss";
     private static final SimpleDateFormat TIME_FORMATTER =
-            new SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.US);
+            new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN);
     // separator
     private static final String SEPARATOR = "\r\n";
+    private static final String LINE = " =========================================";
     // empty IMEI
     private static final String EMPTY_IMEI = "empty_imei";
     // file line header for each type
+    private static final String HEAD_START = "[start]";
     private static final String HEAD_MODEL = "[model] ";
     private static final String HEAD_API = "[api-level] ";
     private static final String HEAD_IMEI = "[imei] ";
@@ -91,6 +93,8 @@ public class LogBean {
             headStr.delete(0, headStr.length() - 1);
         }
 
+        headStr.append(HEAD_START).append(TimeUtils.getNowTimeString())
+                .append(LINE).append(SEPARATOR);
         headStr.append(HEAD_MODEL).append(model).append(SEPARATOR);
         headStr.append(HEAD_API).append(apiLevel).append(SEPARATOR);
         headStr.append(HEAD_IMEI).append(imei).append(SEPARATOR);

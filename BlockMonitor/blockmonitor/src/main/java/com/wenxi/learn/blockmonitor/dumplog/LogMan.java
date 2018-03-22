@@ -1,5 +1,6 @@
 package com.wenxi.learn.blockmonitor.dumplog;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -122,7 +123,7 @@ public class LogMan {
             // deal stack trace
             dealDynamicLog();
             // debug
-            dumpStackTrace2LogCat();
+            //dumpStackTrace2LogCat();
             clearCache();
         }
     };
@@ -157,9 +158,8 @@ public class LogMan {
      */
     private void dealStickyLog() {
         Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
-        Log.d(Const.BLOCK_TAG, "LogMan getLogPath: " + getLogPath());
-        FileUtils.writeFileFromString(mLogBean.getHeaderString(),
-                getLogPath(), false);
+        Log.d(Const.BLOCK_TAG, "LogMan getLogPath: " + getLogPath(BlockMonitor.getInstance().getContext()).getPath());
+        FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()), mLogBean.getHeaderString(), false);
     }
 
     /**
@@ -191,9 +191,9 @@ public class LogMan {
         return mLogBean;
     }
 
-    private String getLogPath() {
-        return PathUtils.getDiskCacheDir(BlockMonitor.getInstance().getContext(),
+    private File getLogPath(Context context) {
+        return PathUtils.getDiskCacheDir(context,
                 BlockMonitor.getInstance().getConfig().getLogPath()
-                        + File.separator + Const.LOG_FILE_NAME).getPath();
+                        + File.separator + Const.LOG_FILE_NAME);
     }
 }
