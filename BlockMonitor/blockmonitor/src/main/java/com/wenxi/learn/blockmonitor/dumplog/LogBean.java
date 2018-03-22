@@ -58,7 +58,7 @@ public class LogBean {
     public LogBean() {
     }
 
-    public static LogBean init() {
+    public LogBean init() {
         LogBean bean = new LogBean();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;

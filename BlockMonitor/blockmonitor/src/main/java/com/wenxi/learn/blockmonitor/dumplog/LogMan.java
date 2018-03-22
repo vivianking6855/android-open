@@ -53,6 +53,7 @@ public class LogMan {
     public void init() {
         if (mLogBean == null) {
             mLogBean = new LogBean();
+            mLogBean.init();
         }
     }
 
