@@ -1,7 +1,6 @@
 package com.wenxi.learn.blockmonitor;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
