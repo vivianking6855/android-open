@@ -46,12 +46,18 @@ public class BlockMonitor {
      */
     public static BlockMonitor install(Context context) {
         BlockMonitor monitor = getInstance();
-        monitor.mContext = context;
-        LogMan.getInstance().init();
+        monitor.init(context);
+        return monitor;
+    }
+
+    private void init(Context context) {
+        // init block monitor
+        mContext = context;
         if (sConfig == null) {
             sConfig = new Config();
         }
-        return getInstance();
+        // init log man, such as sticky device info
+        LogMan.getInstance().init();
     }
 
     /**

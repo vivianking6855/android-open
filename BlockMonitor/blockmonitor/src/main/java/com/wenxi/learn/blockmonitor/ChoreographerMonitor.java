@@ -18,7 +18,7 @@ public final class ChoreographerMonitor {
      * start frame callback monitor
      */
     public static void start() {
-        // init log man
+        // start log man
         LogMan.getInstance().start();
         // set frame callback
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
