@@ -14,7 +14,7 @@ public class BlockMonitor {
     // singleton instance
     private volatile static BlockMonitor instance = null;
     // config for dump information
-    private static IConfig sConfig;
+    private IConfig mConfig;
     // is start or not
     private boolean isStart = false;
     public Context mContext;
@@ -53,8 +53,8 @@ public class BlockMonitor {
     private void init(Context context) {
         // init block monitor
         mContext = context;
-        if (sConfig == null) {
-            sConfig = new Config();
+        if (mConfig == null) {
+            mConfig = new Config();
         }
         // init log man, such as sticky device info
         LogMan.getInstance().init();
@@ -90,22 +90,22 @@ public class BlockMonitor {
     /**
      * set config, such as time block
      */
-    public static void setConfig(IConfig config) {
-        sConfig = config;
+    public void setConfig(IConfig config) {
+        mConfig = config;
     }
 
     /**
      * get config, such as time block
      */
-    public static IConfig getConfig() {
-        return sConfig;
+    public IConfig getConfig() {
+        return mConfig;
     }
 
     /**
      * get context, such as time block
      */
-    public static Context getContext() {
-        return getInstance().mContext;
+    public Context getContext() {
+        return mContext;
     }
 
 }

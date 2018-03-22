@@ -6,10 +6,12 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.open.utislib.file.FileUtils;
+import com.open.utislib.file.PathUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.Const;
-import com.wenxi.learn.blockmonitor.util.UserFileUtils;
+
+import java.io.File;
 
 /**
  * Log Manager
@@ -165,7 +167,7 @@ public class LogMan {
      */
     private void dealHeaderInfo() {
         FileUtils.writeFileFromString(mLogBean.getHeaderString(),
-                UserFileUtils.getLogPath(), false);
+                getLogPath(), false);
     }
 
     /**
@@ -186,5 +188,11 @@ public class LogMan {
 
     private LogBean getLogBean() {
         return mLogBean;
+    }
+
+    private String getLogPath() {
+        return PathUtils.getDiskCacheDir(BlockMonitor.getInstance().getContext(),
+                BlockMonitor.getInstance().getConfig().getLogPath()
+                        + File.separator + Const.LOG_FILE_NAME).getPath();
     }
 }

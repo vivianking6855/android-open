@@ -1,5 +1,6 @@
 package com.wenxi.learn.blockmonitor.dumplog;
 
+import android.content.Context;
 import android.os.Build;
 
 import com.wenxi.learn.blockmonitor.BlockMonitor;
@@ -63,9 +64,10 @@ public class LogBean {
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
-        bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(BlockMonitor.getContext()));
+        Context context = BlockMonitor.getInstance().getContext();
+        bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(context));
         bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory());
-        String imeipre = DeviceUtils.getIMEI(BlockMonitor.getContext());
+        String imeipre = DeviceUtils.getIMEI(context);
         bean.imei = imeipre == null ? EMPTY_IMEI : imeipre;
         return bean;
     }
