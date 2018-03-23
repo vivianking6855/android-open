@@ -157,8 +157,8 @@ public class LogMan {
      * deal device sticky info, such as cpu count
      */
     private void dealStickyLog() {
-        Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
-        Log.d(Const.BLOCK_TAG, "LogMan getLogPath: " + getLogPath(BlockMonitor.getInstance().getContext()).getPath());
+        //Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
+        Log.d(Const.BLOCK_TAG, "LogPath: " + getLogPath(BlockMonitor.getInstance().getContext()).getPath());
         FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()), mLogBean.getHeaderString(), false);
     }
 
@@ -191,7 +191,7 @@ public class LogMan {
         return mLogBean;
     }
 
-    private File getLogPath(Context context) {
+    public File getLogPath(Context context) {
         return PathUtils.getDiskCacheDir(context,
                 BlockMonitor.getInstance().getConfig().getLogPath()
                         + File.separator + Const.LOG_FILE_NAME);

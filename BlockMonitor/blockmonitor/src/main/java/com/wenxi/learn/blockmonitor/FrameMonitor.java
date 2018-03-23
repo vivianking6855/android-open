@@ -31,16 +31,15 @@ final class FrameMonitor {
                     Log.d(Const.BLOCK_TAG, "FrameMonitor stop");
                     return;
                 }
+
+                // computer time diff between two frame
                 if (lastFrameTimeNanos == 0) {
                     lastFrameTimeNanos = frameTimeNanos;
                 }
                 currentFrameTimeNanos = frameTimeNanos;
-                long diffMs = TimeUnit.MILLISECONDS.convert(currentFrameTimeNanos - lastFrameTimeNanos, TimeUnit.NANOSECONDS);
+                recordTimeDiff(lastFrameTimeNanos, currentFrameTimeNanos);
                 lastFrameTimeNanos = currentFrameTimeNanos;
-                if (diffMs > 16.6f) {
-                    double droppedCount = diffMs / 16.6;
-                    Log.d(Const.BLOCK_TAG, "FrameMonitor droppedCount = " + droppedCount);
-                }
+
                 // if already has log message, remove it.
                 // if not remove it at TIME_BLOCK(default 1s), block dump message will show
                 LogMan.getInstance().removeMonitor();
@@ -50,6 +49,14 @@ final class FrameMonitor {
                 Choreographer.getInstance().postFrameCallback(this);
             }
         });
+    }
+
+    private static void recordTimeDiff(long last, long current){
+        long diffMs = TimeUnit.MILLISECONDS.convert(current - last, TimeUnit.NANOSECONDS);
+        if (diffMs > 16.6f) {
+            double droppedCount = diffMs / 16.6;
+            Log.d(Const.BLOCK_TAG, "FrameMonitor droppedCount = " + droppedCount);
+        }
     }
 
     /**

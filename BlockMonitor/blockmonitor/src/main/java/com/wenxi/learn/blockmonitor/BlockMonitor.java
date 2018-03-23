@@ -2,6 +2,7 @@ package com.wenxi.learn.blockmonitor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
@@ -114,6 +115,13 @@ public class BlockMonitor {
      */
     public Context getContext() {
         return mContext;
+    }
+
+    /**
+     * get context, such as time block
+     */
+    public String getLogPath() {
+        return LogMan.getInstance().getLogPath(mContext).getPath();
     }
 
 }
