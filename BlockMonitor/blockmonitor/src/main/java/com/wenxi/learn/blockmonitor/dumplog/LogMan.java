@@ -142,7 +142,7 @@ public class LogMan {
     };
 
     private void clearCache() {
-           stackTraceBuilder.delete(0,stackTraceBuilder.length());
+        stackTraceBuilder.delete(0, stackTraceBuilder.length());
     }
 
     /**
@@ -157,9 +157,14 @@ public class LogMan {
      * deal device sticky info, such as cpu count
      */
     private void dealStickyLog() {
-        //Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
-        Log.d(Const.BLOCK_TAG, "LogPath: " + getLogPath(BlockMonitor.getInstance().getContext()).getPath());
-        FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()), mLogBean.getHeaderString(), false);
+        FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                //Log.d(Const.BLOCK_TAG, "LogMan getHeaderString: " + mLogBean.getHeaderString());
+                Log.d(Const.BLOCK_TAG, "LogPath: " + getLogPath(BlockMonitor.getInstance().getContext()).getPath());
+                FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()), mLogBean.getHeaderString(), false);
+            }
+        });
     }
 
     /**
