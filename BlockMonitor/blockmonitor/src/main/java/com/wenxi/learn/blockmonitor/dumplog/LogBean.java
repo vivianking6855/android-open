@@ -13,7 +13,6 @@ import java.util.ArrayList;
 /**
  * LogInfo, all log bean here
  */
-
 public class LogBean {
     // all logs for user
     private String model = "";
@@ -39,24 +38,28 @@ public class LogBean {
     private static final String HEAD_CPU_CORE = "[cpu-core] ";
     private static final String HEAD_CPU_BUSY = "[cpu-busy] ";
     private static final String HEAD_TIME_COST = "[time] ";
-    private static final String HEAD_THREAD_TIME_COST = "[thread-time] ";
+    private static final String HEAD_DROP = "[drop frame count] ";
     private static final String HEAD_TIME_COST_START = "[time-start] ";
     private static final String HEAD_TIME_COST_END = "[time-end] ";
     private static final String HEAD_STACK = "[stack] ";
     private static final String HEAD_TOTAL_MEMORY = "[total memory] ";
     private static final String HEAD_FREE_MEMORY = "[free memory] ";
 
-    private long timeCost;
-    private long threadTimeCost;
+    private long timeCost; // time diff between two frames
+    private double droppedCount; // drop frame count
     private String timeStart;
     private String timeEnd;
     private boolean cpuBusy;
     private ArrayList<String> stackList = new ArrayList<>();
 
     private StringBuilder headStr = new StringBuilder();
-    private StringBuilder dynamicStr = new StringBuilder();
     private StringBuilder stackStr = new StringBuilder();
 
+    /**
+     * Build log bean.
+     *
+     * @return the log bean
+     */
     static LogBean build() {
         LogBean bean = new LogBean();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
@@ -70,17 +73,28 @@ public class LogBean {
         return bean;
     }
 
-    LogBean setStackEntries(ArrayList<String> threadStackEntries) {
+    /**
+     * Sets stack entries.
+     *
+     * @param threadStackEntries the thread stack entries
+     * @return the stack entries
+     */
+    void setStackEntries(ArrayList<String> threadStackEntries) {
         stackList = threadStackEntries;
-        return this;
     }
 
-    LogBean setCost(long realTimeStart, long realTimeEnd, long threadTimeStart, long threadTimeEnd) {
-        timeCost = realTimeEnd - realTimeStart;
-        threadTimeCost = threadTimeEnd - threadTimeStart;
-        timeStart = TIME_FORMATTER.format(realTimeStart);
-        timeEnd = TIME_FORMATTER.format(realTimeEnd);
-        return this;
+    /**
+     * Sets cost.
+     *
+     * @param timeStart    the time start
+     * @param timeEnd      the time end
+     * @param droppedCount drop frame count
+     */
+    public void setCost(long timeStart, long timeEnd, double droppedCount) {
+        this.timeCost = timeEnd - timeStart;
+        this.droppedCount = droppedCount;
+        this.timeStart = TIME_FORMATTER.format(timeStart);
+        this.timeEnd = TIME_FORMATTER.format(timeEnd);
     }
 
     /**
@@ -105,22 +119,20 @@ public class LogBean {
         return headStr.toString();
     }
 
-    String getDynamicString() {
-        if (dynamicStr.length() > 0) {
-            dynamicStr.delete(0, dynamicStr.length() - 1);
-        }
-
-        return dynamicStr.toString();
-    }
-
+    /**
+     * Gets stack string.
+     *
+     * @return the stack string
+     */
     String getStackString() {
         if (stackStr.length() > 0) {
             stackStr.delete(0, stackStr.length());
         }
+
         stackStr.append(HEAD_TIME_COST).append(timeCost).append(SEPARATOR);
-        stackStr.append(HEAD_THREAD_TIME_COST).append(threadTimeCost).append(SEPARATOR);
         stackStr.append(HEAD_TIME_COST_START).append(timeStart).append(SEPARATOR);
         stackStr.append(HEAD_TIME_COST_END).append(timeEnd).append(SEPARATOR);
+        stackStr.append(HEAD_DROP).append(droppedCount).append(SEPARATOR);
 
         if (stackList != null && !stackList.isEmpty()) {
             StringBuilder temp = new StringBuilder();

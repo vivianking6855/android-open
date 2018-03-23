@@ -192,7 +192,7 @@ public class LogMan {
         }
     }
 
-    private LogBean getLogBean() {
+    public LogBean getLogBean() {
         return mLogBean;
     }
 
