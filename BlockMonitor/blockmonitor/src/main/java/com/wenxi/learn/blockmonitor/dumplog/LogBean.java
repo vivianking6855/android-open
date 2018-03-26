@@ -43,8 +43,8 @@ public class LogBean {
     private static final String HEAD_TIME_COST_START = "[time-start] ";
     private static final String HEAD_TIME_COST_END = "[time-end] ";
     private static final String HEAD_STACK = "[stack] ";
-    private static final String HEAD_TOTAL_MEMORY = "[total memory] ";
-    private static final String HEAD_FREE_MEMORY = "[free memory] ";
+    private static final String HEAD_TOTAL_MEMORY = "[app total memory] ";
+    private static final String HEAD_FREE_MEMORY = "[system free memory] ";
 
     private long timeCost; // time diff between two frames
     private double droppedCount; // drop frame count
@@ -67,8 +67,8 @@ public class LogBean {
         bean.model = Build.MODEL;
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
         Context context = BlockMonitor.getInstance().getContext();
-        bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(context));
-        bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory());
+        bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M";
+        bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory()/1024) + "M";
         String imeipre = DeviceUtils.getIMEI(context);
         bean.imei = imeipre == null ? EMPTY_IMEI : imeipre;
         return bean;
