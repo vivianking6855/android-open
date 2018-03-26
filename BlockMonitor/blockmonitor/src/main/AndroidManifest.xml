@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wenxi.learn.blockmonitor">
+    package="com.learn.blockmonitor">
 
     <!-- save the heap dumps, < API 19 still need permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

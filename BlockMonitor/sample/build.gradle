@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.wenxi.learn.blockmonitor"
+        applicationId "com.learn.blockmonitor"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
