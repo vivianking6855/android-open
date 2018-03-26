@@ -23,6 +23,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.open.library:utilslib:1.0.180322'
+    compile group: 'com.android.support', name: 'appcompat-v7', version: '26.1.0'
+    compile 'com.android.support:design:26.1.0'
 }

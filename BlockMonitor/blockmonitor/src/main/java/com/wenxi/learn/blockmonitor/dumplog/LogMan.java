@@ -43,6 +43,7 @@ public class LogMan {
     private static final SimpleDateFormat TIME_FORMATTER =
             new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN, Locale.getDefault());
 
+    private NotificationUtil notificationUtil;
     /**
      * Gets instance.
      *
@@ -62,7 +63,8 @@ public class LogMan {
     /**
      * init data
      */
-    public void init() {
+    public void init(Context context) {
+        notificationUtil = new NotificationUtil(context.getApplicationContext());
         if (mLogBean == null) {
             mLogBean = LogBean.build();
         }
@@ -93,7 +95,6 @@ public class LogMan {
         try {
             if (mLogThread != null) {
                 removeMonitor();
-                mHandler.removeCallbacks(stackTraceRunnable);
                 mLogThread.quit();
             }
             isRunning = false;
@@ -131,8 +132,8 @@ public class LogMan {
             collectDynamicLog();
             mLogBean.setStackEntries(stackTraceBuilder);
             // debug
-            //     dumpStackTrace2LogCat();
-
+       //     dumpStackTrace2LogCat();
+            notificationUtil.showNotification(stackTraceBuilder.get(0).toString());
             dumpStackTrace2File();
         }
     };

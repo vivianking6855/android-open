@@ -148,7 +148,7 @@ public class LogBean {
         stackStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR);
         stackStr.append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR);
 
-        stackStr.append(HEAD_STACK);
+        stackStr.append(HEAD_STACK).append(SEPARATOR);
         if (stackList != null && !stackList.isEmpty()) {
             for (int i = stackList.size() - 1; i >= 0; i--) {
                 stackStr.append(stackList.get(i).toString());

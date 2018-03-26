@@ -62,7 +62,7 @@ public class BlockMonitor {
             mConfig = new Config();
         }
         // init log man, such as sticky device info
-        LogMan.getInstance().init();
+        LogMan.getInstance().init(context.getApplicationContext());
     }
 
     /**
