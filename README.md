@@ -14,6 +14,10 @@ Android版本：Android 4.1 API 16以上支持
 
 默认抓取log频率：即两次Frame刷新之间获取 次
 
+流程图
+
+![](https://i.imgur.com/R3DUCcr.jpg)
+
 # 使用
 
 # 效果
