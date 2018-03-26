@@ -38,6 +38,7 @@ public class LogBean {
     private static final String HEAD_IMEI = "[imei] ";
     private static final String HEAD_CPU_CORE = "[cpu-core] ";
     private static final String HEAD_CPU_BUSY = "[cpu-busy] ";
+    private static final String HEAD_CPU_STAT = "[cpu-stat] ";
     private static final String HEAD_TIME_COST = "[time] ";
     private static final String HEAD_DROP = "[drop frame count] ";
     private static final String HEAD_TIME_COST_START = "[time-start] ";
@@ -50,6 +51,7 @@ public class LogBean {
     private double droppedCount; // drop frame count
     private String timeStart;
     private String timeEnd;
+    private String cpuStat;
     private boolean cpuBusy;
     private ArrayList<StringBuilder> stackList = new ArrayList<>();
 
@@ -68,7 +70,7 @@ public class LogBean {
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
         Context context = BlockMonitor.getInstance().getContext();
         bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M";
-        bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory()/1024) + "M";
+        bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M";
         String imeipre = DeviceUtils.getIMEI(context);
         bean.imei = imeipre == null ? EMPTY_IMEI : imeipre;
         return bean;
@@ -96,6 +98,15 @@ public class LogBean {
         this.droppedCount = droppedCount;
         this.timeStart = TIME_FORMATTER.format(timeStart);
         this.timeEnd = TIME_FORMATTER.format(timeEnd);
+    }
+
+    /**
+     * Sets CPU stat.
+     *
+     * @param cpuStat cpu and process stat
+     */
+    void setCPUStat(String cpuStat) {
+        this.cpuStat = cpuStat;
     }
 
     /**
@@ -134,10 +145,12 @@ public class LogBean {
         stackStr.append(HEAD_TIME_COST_START).append(timeStart).append(SEPARATOR);
         stackStr.append(HEAD_TIME_COST_END).append(timeEnd).append(SEPARATOR);
         stackStr.append(HEAD_DROP).append(droppedCount).append(SEPARATOR);
+        stackStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR);
+        stackStr.append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR);
 
         stackStr.append(HEAD_STACK);
         if (stackList != null && !stackList.isEmpty()) {
-            for(int i = stackList.size()-1;i >= 0;i--){
+            for (int i = stackList.size() - 1; i >= 0; i--) {
                 stackStr.append(stackList.get(i).toString());
                 stackStr.append(SEPARATOR);
             }

@@ -10,7 +10,8 @@ import java.io.InputStreamReader;
 /**
  * CPUSample
  * get cpu stat and process stat
- * format like this
+ * format like this:
+ * cpu:7% app:0% [user:0% system:7% ioWait:0% ]
  */
 public class CPUSample {
     private static final String TAG = "CPUSample";

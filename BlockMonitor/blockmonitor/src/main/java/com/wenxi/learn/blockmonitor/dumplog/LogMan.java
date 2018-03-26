@@ -13,7 +13,6 @@ import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
 import com.wenxi.learn.blockmonitor.util.CPUSample;
 import com.wenxi.learn.blockmonitor.util.Const;
-import com.wenxi.learn.blockmonitor.util.DeviceUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -43,6 +42,7 @@ public class LogMan {
     // default time format  "yyyy-MM-dd HH:mm:ss";
     private static final SimpleDateFormat TIME_FORMATTER =
             new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN, Locale.getDefault());
+
     /**
      * Gets instance.
      *
@@ -131,7 +131,7 @@ public class LogMan {
             collectDynamicLog();
             mLogBean.setStackEntries(stackTraceBuilder);
             // debug
-       //     dumpStackTrace2LogCat();
+            //     dumpStackTrace2LogCat();
 
             dumpStackTrace2File();
         }
@@ -158,7 +158,7 @@ public class LogMan {
     };
 
     private void clearCache() {
-        if(stackTraceBuilder == null){
+        if (stackTraceBuilder == null) {
             return;
         }
         stackTraceBuilder.clear();
@@ -169,12 +169,13 @@ public class LogMan {
      * deal all dynamic message and save
      */
     private void collectDynamicLog() {
-        collectStackTrace();
         collectDynamicDeviceInfo();
+        collectStackTrace();
     }
 
     /**
      * deal device sticky info, such as cpu count
+     *
      */
     private void writeStickyLog2File() {
         FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
@@ -186,29 +187,34 @@ public class LogMan {
         });
     }
 
-    private void dumpStackTrace2File(){
+    /**
+     * dump stack to target file {@link #LOG_FILE_NAME}
+     *
+     */
+    private void dumpStackTrace2File() {
         final String traceLog = mLogBean.getStackString();
         FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()),
-                        traceLog , true);
+                        traceLog, true);
                 clearCache();
             }
         });
     }
+
     /**
      * deal device dynamic info, such cpu usage, memory
      */
     private void collectDynamicDeviceInfo() {
-       Log.d(Const.BLOCK_TAG, CPUSample.getInstance().sample());
+        mLogBean.setCPUStat(CPUSample.getInstance().sample());
     }
 
     /**
      * deal system stack trace
      */
     private void collectStackTrace() {
-        if(stackTraceBuilder == null){
+        if (stackTraceBuilder == null) {
             stackTraceBuilder = new ArrayList<>();
         }
         StringBuilder builder = new StringBuilder();
@@ -220,7 +226,8 @@ public class LogMan {
             builder.append(s.toString()).append("\n");
         }
         builder.append("================block end:")
-                .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");;
+                .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
+        ;
         stackTraceBuilder.add(builder);
     }
 
@@ -228,7 +235,7 @@ public class LogMan {
      * only dump system trace to logcat
      */
     private void dumpStackTrace2LogCat() {
-        Log.w(Const.BLOCK_TAG,mLogBean.getStackString());
+        Log.w(Const.BLOCK_TAG, mLogBean.getStackString());
     }
 
     public LogBean getLogBean() {
