@@ -2,7 +2,6 @@ package com.wenxi.learn.blockmonitor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.wenxi.learn.blockmonitor.customized.Config;
@@ -50,7 +49,7 @@ public class BlockMonitor {
      * @return the block monitor
      */
     public static BlockMonitor install(Context context) {
-        Log.d(Const.BLOCK_TAG,"BlockMonitor install");
+        Log.d(Const.BLOCK_TAG, "BlockMonitor install");
         BlockMonitor monitor = getInstance();
         monitor.init(context);
         return monitor;
@@ -70,7 +69,7 @@ public class BlockMonitor {
      * Uninstall, release all resource, delete all related log files
      */
     public void uninstall() {
-        Log.d(Const.BLOCK_TAG,"BlockMonitor uninstall");
+        Log.d(Const.BLOCK_TAG, "BlockMonitor uninstall");
         stop();
     }
 
@@ -80,7 +79,7 @@ public class BlockMonitor {
     public synchronized void start() {
         if (!isStart) {
             isStart = true;
-            Log.d(Const.BLOCK_TAG,"BlockMonitor start");
+            Log.d(Const.BLOCK_TAG, "BlockMonitor start");
             FrameMonitor.start();
         }
     }
@@ -91,7 +90,7 @@ public class BlockMonitor {
     public synchronized void stop() {
         if (isStart) {
             isStart = false;
-            Log.d(Const.BLOCK_TAG,"BlockMonitor stop");
+            Log.d(Const.BLOCK_TAG, "BlockMonitor stop");
             FrameMonitor.stop();
         }
     }
