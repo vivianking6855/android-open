@@ -1,6 +1,7 @@
 package com.wenxi.learn.demo.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -14,7 +15,7 @@ import java.util.Arrays;
 
 public class MainActivity extends BaseActivity {
     private HomeRecyclerAdapter mAdapter;
-
+   // private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +44,18 @@ public class MainActivity extends BaseActivity {
         HomeModel model = new HomeModel();
         model.titleArray = Arrays.asList(getResources().getStringArray(R.array.algorithm_list));
         mAdapter.setData(model);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+     /*   handler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.postDelayed(this,1000);
+            }
+        });*/
+
     }
 
     @Override

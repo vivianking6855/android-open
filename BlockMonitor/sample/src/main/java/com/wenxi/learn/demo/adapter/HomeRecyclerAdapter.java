@@ -38,6 +38,11 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.hint.setText(mData.titleArray.get(position));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

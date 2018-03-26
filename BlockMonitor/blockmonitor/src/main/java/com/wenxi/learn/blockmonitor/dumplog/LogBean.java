@@ -9,6 +9,7 @@ import com.wenxi.learn.blockmonitor.util.DeviceUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * LogInfo, all log bean here
@@ -24,9 +25,9 @@ public class LogBean {
 
     // default time format  "yyyy-MM-dd HH:mm:ss";
     private static final SimpleDateFormat TIME_FORMATTER =
-            new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN);
+            new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN, Locale.getDefault());
     // separator
-    private static final String SEPARATOR = "\r\n";
+    private static final String SEPARATOR = "\n";
     private static final String LINE = " =========================================";
     // empty IMEI
     private static final String EMPTY_IMEI = "empty_imei";
@@ -50,7 +51,7 @@ public class LogBean {
     private String timeStart;
     private String timeEnd;
     private boolean cpuBusy;
-    private ArrayList<String> stackList = new ArrayList<>();
+    private ArrayList<StringBuilder> stackList = new ArrayList<>();
 
     private StringBuilder headStr = new StringBuilder();
     private StringBuilder stackStr = new StringBuilder();
@@ -73,13 +74,13 @@ public class LogBean {
         return bean;
     }
 
+
     /**
      * Sets stack entries.
      *
      * @param threadStackEntries the thread stack entries
-     * @return the stack entries
      */
-    void setStackEntries(ArrayList<String> threadStackEntries) {
+    void setStackEntries(ArrayList<StringBuilder> threadStackEntries) {
         stackList = threadStackEntries;
     }
 
@@ -134,15 +135,13 @@ public class LogBean {
         stackStr.append(HEAD_TIME_COST_END).append(timeEnd).append(SEPARATOR);
         stackStr.append(HEAD_DROP).append(droppedCount).append(SEPARATOR);
 
+        stackStr.append(HEAD_STACK);
         if (stackList != null && !stackList.isEmpty()) {
-            StringBuilder temp = new StringBuilder();
-            for (String s : stackList) {
-                temp.append(s);
-                temp.append(SEPARATOR);
+            for(int i = stackList.size()-1;i >= 0;i--){
+                stackStr.append(stackList.get(i).toString());
+                stackStr.append(SEPARATOR);
             }
-            stackStr.append(HEAD_STACK).append(temp.toString()).append(SEPARATOR);
         }
         return stackStr.toString();
     }
-
 }
