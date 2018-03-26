@@ -80,25 +80,25 @@ public final class DeviceUtils {
     /**
      * get max runtime memory
      *
-     * @return max runtime memory
+     * @return max runtime memory (M)
      */
     public static long getMaxMemory() {
-        return Runtime.getRuntime().maxMemory() / 1024;
+        return Runtime.getRuntime().maxMemory() / (1024 * 1024);
     }
 
     /**
      * 获取设备的可用内存大小
      *
      * @param context 应用上下文对象context
-     * @return 当前内存大小
+     * @return 当前内存大小 (M)
      */
-    public static int getDeviceUsableMemory(Context context) {
+    public static long getDeviceUsableMemory(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(
                 Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         am.getMemoryInfo(mi);
         // 返回当前系统的可用内存
-        return (int) (mi.availMem / (1024 * 1024));
+        return (mi.availMem / (1024 * 1024));
     }
 
     /**
@@ -120,5 +120,6 @@ public final class DeviceUtils {
 
         return null;
     }
+
 
 }

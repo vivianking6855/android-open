@@ -55,7 +55,7 @@ final class FrameMonitor {
         long diffMs = TimeUnit.MILLISECONDS.convert(current - last, TimeUnit.NANOSECONDS);
         if (diffMs > 16.6f) {
             double droppedCount = diffMs / 16.6;
-            Log.d(Const.BLOCK_TAG, "FrameMonitor droppedCount = " + droppedCount);
+            //Log.d(Const.BLOCK_TAG, "FrameMonitor droppedCount = " + droppedCount);
             LogMan.getInstance().getLogBean().setCost(last, current, droppedCount);
         }
     }

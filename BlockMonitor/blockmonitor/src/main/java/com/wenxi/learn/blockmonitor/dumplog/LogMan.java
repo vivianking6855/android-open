@@ -11,7 +11,9 @@ import com.open.utislib.file.PathUtils;
 import com.open.utislib.time.TimeUtils;
 import com.wenxi.learn.blockmonitor.BlockMonitor;
 import com.wenxi.learn.blockmonitor.customized.IConfig;
+import com.wenxi.learn.blockmonitor.util.CPUSample;
 import com.wenxi.learn.blockmonitor.util.Const;
+import com.wenxi.learn.blockmonitor.util.DeviceUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -199,6 +201,7 @@ public class LogMan {
      * deal device dynamic info, such cpu usage, memory
      */
     private void collectDynamicDeviceInfo() {
+       Log.d(Const.BLOCK_TAG, CPUSample.getInstance().sample());
     }
 
     /**
