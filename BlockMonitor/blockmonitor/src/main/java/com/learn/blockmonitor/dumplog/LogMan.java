@@ -6,13 +6,13 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
-import com.open.utislib.file.FileUtils;
-import com.open.utislib.file.PathUtils;
-import com.open.utislib.time.TimeUtils;
 import com.learn.blockmonitor.BlockMonitor;
 import com.learn.blockmonitor.customized.IConfig;
 import com.learn.blockmonitor.util.CPUSample;
 import com.learn.blockmonitor.util.Const;
+import com.open.utislib.file.FileUtils;
+import com.open.utislib.file.PathUtils;
+import com.open.utislib.time.TimeUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -44,6 +44,7 @@ public class LogMan {
             new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN, Locale.getDefault());
 
     private NotificationUtil notificationUtil;
+
     /**
      * Gets instance.
      *
@@ -129,10 +130,10 @@ public class LogMan {
         public void run() {
             Log.d(Const.BLOCK_TAG, "LogMan get block! dump them!");
             // deal stack trace
-            collectDynamicLog();
+            collectStackTrace();
             mLogBean.setStackEntries(stackTraceBuilder);
             // debug
-       //     dumpStackTrace2LogCat();
+            //     dumpStackTrace2LogCat();
             notificationUtil.showNotification(stackTraceBuilder.get(0).toString());
             dumpStackTrace2File();
         }
@@ -143,7 +144,8 @@ public class LogMan {
     private Runnable stackTraceRunnable = new Runnable() {
         @Override
         public void run() {
-            collectDynamicLog();
+            // collect system trace
+            collectStackTrace();
             if (mLogThread.isAlive()) {
                 // post to start capture system trace, delay for next time
                 mHandler.postDelayed(this, STACKTRACE_DURATION);
@@ -167,16 +169,7 @@ public class LogMan {
     }
 
     /**
-     * deal all dynamic message and save
-     */
-    private void collectDynamicLog() {
-        collectDynamicDeviceInfo();
-        collectStackTrace();
-    }
-
-    /**
      * deal device sticky info, such as cpu count
-     *
      */
     private void writeStickyLog2File() {
         FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
@@ -189,26 +182,19 @@ public class LogMan {
     }
 
     /**
-     * dump stack to target file {@link #LOG_FILE_NAME}
-     *
+     * dump stack to target file
      */
     private void dumpStackTrace2File() {
         final String traceLog = mLogBean.getStackString();
+        final String cpulog = mLogBean.getCPUStat(CPUSample.getInstance().sample());
         FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()),
-                        traceLog, true);
+                        traceLog + cpulog, true);
                 clearCache();
             }
         });
-    }
-
-    /**
-     * deal device dynamic info, such cpu usage, memory
-     */
-    private void collectDynamicDeviceInfo() {
-        mLogBean.setCPUStat(CPUSample.getInstance().sample());
     }
 
     /**
@@ -228,7 +214,6 @@ public class LogMan {
         }
         builder.append("================block end:")
                 .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
-        ;
         stackTraceBuilder.add(builder);
     }
 

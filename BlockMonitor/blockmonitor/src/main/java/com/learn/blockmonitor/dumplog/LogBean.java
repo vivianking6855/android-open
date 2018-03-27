@@ -3,9 +3,9 @@ package com.learn.blockmonitor.dumplog;
 import android.content.Context;
 import android.os.Build;
 
-import com.open.utislib.time.TimeUtils;
 import com.learn.blockmonitor.BlockMonitor;
 import com.learn.blockmonitor.util.DeviceUtils;
+import com.open.utislib.time.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,12 +51,12 @@ public class LogBean {
     private double droppedCount; // drop frame count
     private String timeStart;
     private String timeEnd;
-    private String cpuStat;
     private boolean cpuBusy;
     private ArrayList<StringBuilder> stackList = new ArrayList<>();
 
     private StringBuilder headStr = new StringBuilder();
     private StringBuilder stackStr = new StringBuilder();
+    private StringBuilder cpuStr = new StringBuilder();
 
     /**
      * Build log bean.
@@ -105,8 +105,9 @@ public class LogBean {
      *
      * @param cpuStat cpu and process stat
      */
-    void setCPUStat(String cpuStat) {
-        this.cpuStat = cpuStat;
+    String getCPUStat(String cpuStat) {
+        return cpuStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR).
+                append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR).toString();
     }
 
     /**
@@ -145,10 +146,8 @@ public class LogBean {
         stackStr.append(HEAD_TIME_COST_START).append(timeStart).append(SEPARATOR);
         stackStr.append(HEAD_TIME_COST_END).append(timeEnd).append(SEPARATOR);
         stackStr.append(HEAD_DROP).append(droppedCount).append(SEPARATOR);
-        stackStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR);
-        stackStr.append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR);
-
         stackStr.append(HEAD_STACK).append(SEPARATOR);
+
         if (stackList != null && !stackList.isEmpty()) {
             for (int i = stackList.size() - 1; i >= 0; i--) {
                 stackStr.append(stackList.get(i).toString());

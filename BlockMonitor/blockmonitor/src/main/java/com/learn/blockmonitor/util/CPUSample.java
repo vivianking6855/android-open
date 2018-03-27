@@ -132,9 +132,10 @@ public class CPUSample {
             StringBuilder stringBuilder = new StringBuilder();
             long idleTime = idle - mIdleLast;
             long totalTime = total - mTotalLast;
+            final long cpu = (totalTime == 0) ? 0 : (totalTime - idleTime) * 100L / totalTime;
             stringBuilder
                     .append("cpu:")
-                    .append((totalTime - idleTime) * 100L / totalTime)
+                    .append(cpu)
                     .append("% ")
                     .append("app:")
                     .append((appCpuTime - mAppCpuTimeLast) * 100L / totalTime)
