@@ -1,5 +1,11 @@
 package com.learn.blockmonitor.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +19,7 @@ import android.widget.TextView;
 
 import com.learn.blockmonitor.BlockMonitor;
 import com.learn.blockmonitor.R;
+import com.learn.blockmonitor.util.Const;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -39,6 +46,7 @@ public class StackLogListFragment extends Fragment {
         View v = inflater.inflate(R.layout.stack_log_list_fragment,container,false);
         RecyclerView recyclerView = v.findViewById(R.id.stack_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new StackItemDecoration(getContext()));
         adapter = new StackAdapter();
         recyclerView.setAdapter(adapter);
         return v;
@@ -138,8 +146,16 @@ public class StackLogListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(StackViewHolder holder, int position) {
-            String log = stacks.get(position);
-            holder.textView.setText(log.substring(0,100));
+            final String log = stacks.get(position);
+            holder.textView.setText(log.substring(0,200));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(),StackLogDetailActivity.class);
+                    intent.putExtra(Const.KEY_DETAIL_LOG,log);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -153,6 +169,43 @@ public class StackLogListFragment extends Fragment {
                 super(itemView);
                 textView = itemView.findViewById(R.id.log_item_text);
             }
+        }
+    }
+
+    private static class StackItemDecoration extends RecyclerView.ItemDecoration{
+
+        private int itemDividerHeight = 0;
+        private Paint dividerPaint;
+
+        StackItemDecoration(Context context){
+            itemDividerHeight = context.getResources().getDimensionPixelSize(R.dimen.divider_height);
+            dividerPaint = new Paint();
+            dividerPaint.setColor(Color.GRAY);
+        }
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDraw(c, parent, state);
+            int childCount = parent.getChildCount();
+            Rect rect = new Rect();
+            for(int i = 1;i<childCount;i++){
+                View child = parent.getChildAt(i);
+                rect.top = child.getTop() - itemDividerHeight;
+                rect.right = child.getRight();
+                rect.left = child.getLeft();
+                rect.bottom = child.getTop();
+                c.drawRect(rect,dividerPaint);
+            }
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDrawOver(c, parent, state);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.top = itemDividerHeight;
         }
     }
 

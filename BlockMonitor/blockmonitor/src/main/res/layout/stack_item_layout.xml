@@ -6,6 +6,7 @@
     android:padding="3dp">
 
     <TextView
+        style="@style/StackLogTextAppearance"
         android:id="@+id/log_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

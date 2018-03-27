@@ -137,6 +137,7 @@ public class LogMan {
             //     dumpStackTrace2LogCat();
             notificationUtil.showNotification(stackTraceBuilder.get(0).toString());
             dumpStackTrace2File();
+            clearCache();
         }
     };
 
@@ -193,7 +194,6 @@ public class LogMan {
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()),
                         traceLog + cpulog, true);
-                clearCache();
             }
         });
     }

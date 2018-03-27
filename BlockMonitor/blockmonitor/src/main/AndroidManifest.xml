@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application >
-        <activity android:name=".ui.StackLogActivity" />
+        <activity android:name=".ui.StackLogActivity"
+            android:label="@string/module_name"/>
+
+        <activity
+            android:label="@string/module_name"
+            android:name=".ui.StackLogDetailActivity"
+            android:launchMode="singleTop"/>
     </application>
 </manifest>

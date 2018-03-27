@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BlockMonitor</string>
+    <string name="module_name">BlockMonitor</string>
     <string name="channel_name">blocker</string>
     <string name="channel_description">there is block occurs</string>
 </resources>
