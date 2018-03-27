@@ -63,6 +63,7 @@ public class LogMan {
 
     /**
      * init data
+     * @param context Context
      */
     public void init(Context context) {
         notificationUtil = new NotificationUtil(context.getApplicationContext());

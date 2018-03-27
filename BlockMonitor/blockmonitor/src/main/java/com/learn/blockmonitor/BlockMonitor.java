@@ -97,6 +97,7 @@ public class BlockMonitor {
 
     /**
      * set config, such as time block
+     * @param config customised IConfig
      */
     public void setConfig(IConfig config) {
         mConfig = config;
@@ -104,6 +105,7 @@ public class BlockMonitor {
 
     /**
      * get config, such as time block
+     * @return IConfig
      */
     public IConfig getConfig() {
         return mConfig;
@@ -111,6 +113,7 @@ public class BlockMonitor {
 
     /**
      * get context, such as time block
+     * @return Context
      */
     public Context getContext() {
         return mContext;
@@ -118,6 +121,7 @@ public class BlockMonitor {
 
     /**
      * get context, such as time block
+     * @return String
      */
     public String getLogPath() {
         return LogMan.getInstance().getLogPath(mContext).getPath();
