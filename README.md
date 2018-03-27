@@ -1,6 +1,8 @@
 # Android Block Monitor
 
-Android版本：Android 4.1 API 16以上支持
+Android版本：Android 4.1 API 16以上支持。
+
+jCenter发布地址：[https://bintray.com/vivianwayne1985/maven/AndroidBlockMonitor](https://bintray.com/vivianwayne1985/maven/AndroidBlockMonitor)
 
 # 原理
 
@@ -19,8 +21,53 @@ Android版本：Android 4.1 API 16以上支持
 ![](https://i.imgur.com/R3DUCcr.jpg)
 
 # 使用
+   
+   Gradle
+
+    compile 'com.learn.blockmonitor:AndroidBlockMonitor:1.0.180326'
+
+   Maven
+
+    <dependency>
+      <groupId>com.learn.blockmonitor</groupId>
+      <artifactId>AndroidBlockMonitor</artifactId>
+      <version>1.0.180326</version>
+      <type>pom</type>
+    </dependency>
+    
+    
+1. 加载和启动Application的OnCreate
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            BlockMonitor.getInstance().install(this).start();
+        }
+
+2. 暂停
+
+    BlockMonitor.getInstance().install(this).stop();
+
+3. 卸载
+    
+    BlockMonitor.getInstance().install(this).uninstall();
+
 
 # 效果
+
+---
+
+Notification
+
+   ![](https://i.imgur.com/HAFM9qr.jpg)
+
+---
+
+Log详情
+    
+   ![](https://i.imgur.com/Anob1Tk.jpg)
+
+空白部分后期会显示波形图（Frame-Time，Frame-DropCount等）
 
 # log信息
 
@@ -29,3 +76,8 @@ Android版本：Android 4.1 API 16以上支持
 - CPU状态：CPU Core，是否busy等
 - Memory状态：all memory, free memory等
 - 外部传入备注信息（例如，package name, version, etc）
+
+
+# TODO
+
+详情上方的波形图

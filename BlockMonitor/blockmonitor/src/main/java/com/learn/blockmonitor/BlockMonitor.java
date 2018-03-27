@@ -76,7 +76,7 @@ public class BlockMonitor {
     /**
      * start monitor frame
      */
-    public synchronized void start() {
+    public void start() {
         if (!isStart) {
             isStart = true;
             Log.d(Const.BLOCK_TAG, "BlockMonitor start");
@@ -87,7 +87,7 @@ public class BlockMonitor {
     /**
      * stop monitor
      */
-    public synchronized void stop() {
+    public void stop() {
         if (isStart) {
             isStart = false;
             Log.d(Const.BLOCK_TAG, "BlockMonitor stop");
