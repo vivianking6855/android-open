@@ -1,37 +1,43 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release' // publish tool
-//
-//// publish
-//publish {
-//    userOrg = 'vivianwayne1985'//organization，初次注册需要到bintray.com创建一个
-//    groupId = 'com.learn.blockmonitor'//jcenter上的路径
-//    artifactId = 'AndroidBlockMonitor'//项目名称
-//    publishVersion = '1.0.180326'//版本号
-//    desc = 'this is block monitor library for android'//描述，不重要
-//    website = 'http://vivianking6855.github.io'//网站，最好有，不重要
-//}
+apply plugin: 'com.novoda.bintray-release' // publish tool
+
+// publish
+publish {
+    userOrg = 'vivianwayne1985'//organization，初次注册需要到bintray.com创建一个
+    groupId = 'com.learn.blockmonitor'//jcenter上的路径
+    artifactId = 'AndroidBlockMonitor'//项目名称
+    publishVersion = '1.0.180326'//版本号
+    desc = 'this is block monitor library for android'//描述，不重要
+    website = 'http://vivianking6855.github.io'//网站，最好有，不重要
+}
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 25
+        versionCode 180327
+        versionName "1.0.180327"
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.open.library:utilslib:1.0.180322'
-    compile group: 'com.android.support', name: 'appcompat-v7', version: '26.1.0'
-    compile 'com.android.support:design:26.1.0'
+    implementation 'com.open.library:utilslib:1.0.180326'
+    implementation group: 'com.android.support', name: 'appcompat-v7', version: '26.1.0'
+    implementation 'com.android.support:design:26.1.0'
 }

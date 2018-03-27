@@ -8,8 +8,8 @@ import android.util.Log;
 
 import com.learn.blockmonitor.BlockMonitor;
 import com.learn.blockmonitor.customized.IConfig;
-import com.learn.blockmonitor.util.CPUSample;
 import com.learn.blockmonitor.util.Const;
+import com.open.utislib.device.CPUSample;
 import com.open.utislib.file.FileUtils;
 import com.open.utislib.file.PathUtils;
 import com.open.utislib.time.TimeUtils;

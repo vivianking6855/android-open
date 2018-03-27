@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.learn.blockmonitor.BlockMonitor;
-import com.learn.blockmonitor.util.DeviceUtils;
+import com.open.utislib.device.DeviceUtils;
 import com.open.utislib.time.TimeUtils;
 
 import java.text.SimpleDateFormat;
