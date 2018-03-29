@@ -2,6 +2,7 @@ package com.learn.blockmonitor.util;
 
 /**
  * Created by vivian on 2018/3/21.
+ *
  */
 
 public final class Const {

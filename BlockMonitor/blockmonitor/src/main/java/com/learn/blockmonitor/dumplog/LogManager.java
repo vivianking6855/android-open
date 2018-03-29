@@ -10,11 +10,13 @@ import com.open.utislib.time.TimeUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * LogInfo, all log bean here
  */
-public class LogBean {
+public class LogManager {
+    //private static final int MAX_CACHE_SIZE = 100;
     // all logs for user
     private String model = "";
     private String apiLevel = "";
@@ -58,13 +60,16 @@ public class LogBean {
     private StringBuilder stackStr = new StringBuilder();
     private StringBuilder cpuStr = new StringBuilder();
 
+    //frame refresh chart data cache
+    private ConcurrentLinkedQueue<Long> refreshTimeConsumeCache = new ConcurrentLinkedQueue<>();
+
     /**
      * Build log bean.
      *
      * @return the log bean
      */
-    static LogBean build() {
-        LogBean bean = new LogBean();
+    static LogManager build() {
+        LogManager bean = new LogManager();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
@@ -106,6 +111,7 @@ public class LogBean {
      * @param cpuStat cpu and process stat
      */
     String getCPUStat(String cpuStat) {
+        cpuStr.delete(0,cpuStr.length());
         return cpuStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR).
                 append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR).toString();
     }
@@ -149,11 +155,37 @@ public class LogBean {
         stackStr.append(HEAD_STACK).append(SEPARATOR);
 
         if (stackList != null && !stackList.isEmpty()) {
-            for (int i = stackList.size() - 1; i >= 0; i--) {
-                stackStr.append(stackList.get(i).toString());
+            for (StringBuilder sb:stackList) {
+                stackStr.append(sb.toString());
                 stackStr.append(SEPARATOR);
             }
         }
         return stackStr.toString();
+    }
+
+    public void addRefreshFrameDurationCache(long duration){
+      /*  if(refreshTimeConsumeCache.size() == MAX_CACHE_SIZE){
+            refreshTimeConsumeCache = (LinkedList<Long>)refreshTimeConsumeCache.subList((int)(MAX_CACHE_SIZE * 0.5),MAX_CACHE_SIZE);
+        }*/
+        refreshTimeConsumeCache.offer(duration);
+    }
+
+    public void clearDrawCache(){
+        refreshTimeConsumeCache.clear();
+    }
+
+    public ConcurrentLinkedQueue<Long> getDrawCacheData(){
+        return refreshTimeConsumeCache;
+    }
+
+    void destroy(){
+        refreshTimeConsumeCache.clear();
+        stackList.clear();
+        headStr.delete(0,headStr.length());
+        headStr = null;
+        stackStr.delete(0,stackStr.length());
+        stackStr = null;
+        cpuStr .delete(0,cpuStr.length());
+        cpuStr = null;
     }
 }

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class StackLogListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.stack_log_list_fragment,container,false);
+        View v = inflater.inflate(R.layout.stack_log_list_fragment, container, false);
         RecyclerView recyclerView = v.findViewById(R.id.stack_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new StackItemDecoration(getContext()));
@@ -58,16 +59,16 @@ public class StackLogListFragment extends Fragment {
         new LoadLogTask(this).execute(BlockMonitor.getInstance().getLogPath());
     }
 
-    private static class LoadLogTask extends AsyncTask<String,Void,List<String>> {
+    private static class LoadLogTask extends AsyncTask<String, Void, List<BlockStackLogEntity>> {
         WeakReference<StackLogListFragment> fragmentWeakReference;
 
-        LoadLogTask(StackLogListFragment fr){
+        LoadLogTask(StackLogListFragment fr) {
             fragmentWeakReference = new WeakReference<>(fr);
         }
 
         @Override
-        protected List<String> doInBackground(String... strings) {
-            if(strings[0]==null || strings[0].isEmpty()){
+        protected List<BlockStackLogEntity> doInBackground(String... strings) {
+            if (strings[0] == null || strings[0].isEmpty()) {
                 return null;
             }
             BufferedReader bufferedReader = null;
@@ -75,41 +76,42 @@ public class StackLogListFragment extends Fragment {
                 bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(strings[0])));
                 String line;
                 StringBuilder sb = new StringBuilder();
-                List<String> results = new ArrayList<>();
-                while ((line = bufferedReader.readLine())!=null){
-                    if(line.startsWith("[start]")){
-                        sb.append(line);
-                        while ((line = bufferedReader.readLine())!=null){
-                            sb.append(line).append(SEPARATOR);
-                            if(line.startsWith("[stack]")){
-                                results.add(sb.toString());
-                                sb.delete(0,sb.length());
-                                break;
-                            }
-                        }
-                    }else {
-                        if(line.startsWith("=")){
-                            if(line.contains("block begin")){
-                                sb.append(line);
-                                while ((line = bufferedReader.readLine())!=null){
-                                    sb.append(line).append(SEPARATOR);
-                                    if(line.startsWith("=") && line.contains("block end")){
-                                        results.add(sb.toString());
-                                        sb.delete(0,sb.length());
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+                List<BlockStackLogEntity> mergedEntityList = new ArrayList<>();
+                LogEntity deviceInfo = null;
+                LogEntity cpuLog = null;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line).append(SEPARATOR);
+                    //parse device info
+                    if (line.startsWith("[app total memory]")) {
+                        LogEntity entity = LogEntity.obtain();
+                        entity.setContent(sb.toString());
+                        entity.setType(LogEntity.TYPE_DEVICE);
+                        deviceInfo = entity;
+                        sb.delete(0, sb.length());
+                    } else if(line.startsWith("[drop frame count]")){
+                        //parse cpu and block stacktrace log
+                        LogEntity entity = LogEntity.obtain();
+                        entity.setContent(sb.toString());
+                        entity.setType(LogEntity.TYPE_CPU);
+                        cpuLog = entity;
+                        sb.delete(0, sb.length());
+                    }else if(line.startsWith("================block end")) {
+                        BlockStackLogEntity entity = BlockStackLogEntity.obtain();
+                        entity.setCpu(cpuLog);
+                        entity.setDevice(deviceInfo);
+                        entity.setContent(sb.toString());
+                        mergedEntityList.add(entity);
+                        sb.delete(0, sb.length());
                     }
                 }
-                return results;
+                Collections.reverse(mergedEntityList);
+                return mergedEntityList;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(bufferedReader != null) {
+                if (bufferedReader != null) {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
@@ -121,38 +123,43 @@ public class StackLogListFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<String> result) {
+        protected void onPostExecute(List<BlockStackLogEntity> result) {
             StackLogListFragment fr = fragmentWeakReference.get();
-            if(fr!=null){
+            if (fr != null) {
                 fr.adapter.setData(result);
                 fr.adapter.notifyDataSetChanged();
             }
         }
     }
 
-    private static class StackAdapter extends RecyclerView.Adapter<StackAdapter.StackViewHolder>{
+    private static class StackAdapter extends RecyclerView.Adapter<StackAdapter.StackViewHolder> {
 
-        private List<String> stacks;
+        private List<BlockStackLogEntity> stacks;
 
-        void setData(List<String> stacks){
+        void setData(List<BlockStackLogEntity> stacks) {
             this.stacks = stacks;
         }
 
         @Override
         public StackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stack_item_layout,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stack_item_layout, parent, false);
             return new StackViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(StackViewHolder holder, int position) {
-            final String log = stacks.get(position);
-            holder.textView.setText(log.substring(0,200));
+            BlockStackLogEntity log = stacks.get(position);
+            holder.itemView.setTag(log);
+            holder.textView.setText(log.getContent().substring(0, 200));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),StackLogDetailActivity.class);
-                    intent.putExtra(Const.KEY_DETAIL_LOG,log);
+                    BlockStackLogEntity logEntity = (BlockStackLogEntity)v.getTag();
+                    String detail = logEntity.getDevice().getContent() +
+                            logEntity.getCpu().getContent() +
+                            logEntity.getContent();
+                    Intent intent = new Intent(v.getContext(), StackLogDetailActivity.class);
+                    intent.putExtra(Const.KEY_DETAIL_LOG, detail);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -160,11 +167,12 @@ public class StackLogListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return stacks == null?0:stacks.size();
+            return stacks == null ? 0 : stacks.size();
         }
 
-        static class StackViewHolder extends RecyclerView.ViewHolder{
+        static class StackViewHolder extends RecyclerView.ViewHolder {
             TextView textView;
+
             StackViewHolder(View itemView) {
                 super(itemView);
                 textView = itemView.findViewById(R.id.log_item_text);
@@ -172,28 +180,29 @@ public class StackLogListFragment extends Fragment {
         }
     }
 
-    private static class StackItemDecoration extends RecyclerView.ItemDecoration{
+    private static class StackItemDecoration extends RecyclerView.ItemDecoration {
 
         private int itemDividerHeight = 0;
         private Paint dividerPaint;
 
-        StackItemDecoration(Context context){
+        StackItemDecoration(Context context) {
             itemDividerHeight = context.getResources().getDimensionPixelSize(R.dimen.divider_height);
             dividerPaint = new Paint();
             dividerPaint.setColor(Color.GRAY);
         }
+
         @Override
         public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
             super.onDraw(c, parent, state);
             int childCount = parent.getChildCount();
             Rect rect = new Rect();
-            for(int i = 1;i<childCount;i++){
+            for (int i = 1; i < childCount; i++) {
                 View child = parent.getChildAt(i);
                 rect.top = child.getTop() - itemDividerHeight;
                 rect.right = child.getRight();
                 rect.left = child.getLeft();
                 rect.bottom = child.getTop();
-                c.drawRect(rect,dividerPaint);
+                c.drawRect(rect, dividerPaint);
             }
         }
 

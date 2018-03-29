@@ -1,10 +1,11 @@
 package com.learn.blockmonitor.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
+import android.text.Layout;
 import android.widget.TextView;
 
 import com.learn.blockmonitor.R;
@@ -23,6 +24,9 @@ public class StackLogDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stacklog_detail_page);
         content = findViewById(R.id.detail_content);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            content.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+        }
         showLogFromIntent(getIntent());
     }
 
@@ -36,7 +40,6 @@ public class StackLogDetailActivity extends AppCompatActivity {
         if(intent != null) {
             String log = intent.getStringExtra(Const.KEY_DETAIL_LOG);
             if(log!=null && !log.isEmpty()) {
-                content.setMovementMethod(new ScrollingMovementMethod());
                 content.setText(log);
             }
         }

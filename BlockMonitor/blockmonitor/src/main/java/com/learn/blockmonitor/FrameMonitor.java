@@ -53,9 +53,14 @@ final class FrameMonitor {
 
     private static void recordTimeDiff(long last, long current) {
         long diffMs = TimeUnit.MILLISECONDS.convert(current - last, TimeUnit.NANOSECONDS);
+      //  Log.w(Const.BLOCK_TAG,"diffMs="+diffMs);
+        if(LogMan.getInstance().getIsDrawing() && diffMs != 0){
+            LogMan.getInstance().getLogManager().addRefreshFrameDurationCache(diffMs);
+        }
+
         if (diffMs > 16.6f) {
             double droppedCount = diffMs / 16.6;
-            LogMan.getInstance().getLogBean().setCost(last, current, droppedCount);
+            LogMan.getInstance().getLogManager().setCost(last, current, droppedCount);
         }
     }
 

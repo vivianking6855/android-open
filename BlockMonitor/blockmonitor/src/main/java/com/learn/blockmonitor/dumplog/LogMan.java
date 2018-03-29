@@ -34,7 +34,7 @@ public class LogMan {
     private ArrayList<StringBuilder> stackTraceBuilder = new ArrayList<>();
 
     // log bean, all log information here
-    private LogBean mLogBean;
+    private LogManager logManager;
 
     // log already start or not
     private boolean isRunning;
@@ -44,6 +44,7 @@ public class LogMan {
             new SimpleDateFormat(TimeUtils.DEFAULT_PATTERN, Locale.getDefault());
 
     private NotificationUtil notificationUtil;
+    private boolean isDrawing;
 
     /**
      * Gets instance.
@@ -63,12 +64,13 @@ public class LogMan {
 
     /**
      * init data
+     *
      * @param context Context
      */
     public void init(Context context) {
         notificationUtil = new NotificationUtil(context.getApplicationContext());
-        if (mLogBean == null) {
-            mLogBean = LogBean.build();
+        if (logManager == null) {
+            logManager = LogManager.build();
         }
     }
 
@@ -103,6 +105,9 @@ public class LogMan {
         } catch (Exception e) {
             Log.w(Const.BLOCK_TAG, "LogMan stop ex", e);
         }
+        clearCache();
+        logManager.destroy();
+        logManager = null;
     }
 
     /**
@@ -113,7 +118,7 @@ public class LogMan {
         mHandler.post(stackTraceRunnable);
         // post log runnable to record block
         IConfig config = BlockMonitor.getInstance().getConfig();
-        mHandler.postDelayed(mLogRunnable, config.getBlockThreshold());
+        mHandler.postDelayed(dealWithBlockRunnable, config.getBlockThreshold());
     }
 
     /**
@@ -122,21 +127,21 @@ public class LogMan {
     public void removeMonitor() {
         mHandler.post(clearStackCacheRunnable);
         mHandler.removeCallbacks(stackTraceRunnable);
-        mHandler.removeCallbacks(mLogRunnable);
+        mHandler.removeCallbacks(dealWithBlockRunnable);
     }
 
     // log runnable to record block
-    private Runnable mLogRunnable = new Runnable() {
+    private Runnable dealWithBlockRunnable = new Runnable() {
         @Override
         public void run() {
             Log.d(Const.BLOCK_TAG, "LogMan get block! dump them!");
             // deal stack trace
-            collectStackTrace();
-            mLogBean.setStackEntries(stackTraceBuilder);
+            collectStackTrace(true);
+            logManager.setStackEntries(stackTraceBuilder);
             // debug
             //     dumpStackTrace2LogCat();
-            notificationUtil.showNotification(stackTraceBuilder.get(0).toString());
             dumpStackTrace2File();
+            notificationUtil.showNotification(stackTraceBuilder.get(0).toString());
             clearCache();
         }
     };
@@ -147,7 +152,7 @@ public class LogMan {
         @Override
         public void run() {
             // collect system trace
-            collectStackTrace();
+            collectStackTrace(false);
             if (mLogThread.isAlive()) {
                 // post to start capture system trace, delay for next time
                 mHandler.postDelayed(this, STACKTRACE_DURATION);
@@ -178,7 +183,7 @@ public class LogMan {
             @Override
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()),
-                        mLogBean.getHeaderString(), false);
+                        logManager.getHeaderString(), false);
             }
         });
     }
@@ -187,13 +192,13 @@ public class LogMan {
      * dump stack to target file
      */
     private void dumpStackTrace2File() {
-        final String traceLog = mLogBean.getStackString();
-        final String cpulog = mLogBean.getCPUStat(CPUSample.getInstance().sample());
+        final String traceLog = logManager.getStackString();
+        final String cpulog = logManager.getCPUStat(CPUSample.getInstance().sample());
         FileMan.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(BlockMonitor.getInstance().getContext()),
-                        traceLog + cpulog, true);
+                        cpulog + traceLog, true);
             }
         });
     }
@@ -201,37 +206,47 @@ public class LogMan {
     /**
      * deal system stack trace
      */
-    private void collectStackTrace() {
+    private void collectStackTrace(boolean blocked) {
         if (stackTraceBuilder == null) {
             stackTraceBuilder = new ArrayList<>();
         }
-        StringBuilder builder = new StringBuilder();
-        builder.append("================block begin:")
-                .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
-        StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
 
+        if(blocked) {
+            StringBuilder blockBegin = new StringBuilder();
+            blockBegin.append("================block begin:")
+                    .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
+            stackTraceBuilder.add(0,blockBegin);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        StackTraceElement[] stackTrace = Looper.getMainLooper().getThread().getStackTrace();
         for (StackTraceElement s : stackTrace) {
             builder.append(s.toString()).append("\n");
         }
-        builder.append("================block end:")
-                .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
         stackTraceBuilder.add(builder);
+        if(blocked) {
+            StringBuilder blockEnd = new StringBuilder();
+            blockEnd.append("================block end:")
+                    .append(TIME_FORMATTER.format(System.currentTimeMillis())).append("\n");
+            stackTraceBuilder.add(blockEnd);
+        }
     }
 
-    /**
-     * only dump system trace to logcat
-     */
-    private void dumpStackTrace2LogCat() {
-        Log.w(Const.BLOCK_TAG, mLogBean.getStackString());
-    }
-
-    public LogBean getLogBean() {
-        return mLogBean;
+    public LogManager getLogManager() {
+        return logManager;
     }
 
     public File getLogPath(Context context) {
         return PathUtils.getDiskCacheDir(context,
                 BlockMonitor.getInstance().getConfig().getLogPath()
                         + File.separator + Const.LOG_FILE_NAME);
+    }
+
+    public void setIsDrawing(boolean drawing){
+        isDrawing = drawing;
+    }
+
+    public boolean getIsDrawing(){
+        return isDrawing;
     }
 }
