@@ -111,7 +111,9 @@ public class MonitorLogUtils {
      * @param cpuStat cpu and process stat
      */
     String getCPUStat(String cpuStat) {
-        cpuStr.delete(0,cpuStr.length());
+        if (cpuStr.length() > 0) {
+            cpuStr.delete(0, cpuStr.length());
+        }
         return cpuStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR).
                 append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR).toString();
     }
