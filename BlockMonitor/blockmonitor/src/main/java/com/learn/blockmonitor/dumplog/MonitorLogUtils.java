@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * LogInfo, all log bean here
  */
-public class LogManager {
+public class MonitorLogUtils {
     //private static final int MAX_CACHE_SIZE = 100;
     // all logs for user
     private String model = "";
@@ -68,8 +68,8 @@ public class LogManager {
      *
      * @return the log bean
      */
-    static LogManager build() {
-        LogManager bean = new LogManager();
+    static MonitorLogUtils build() {
+        MonitorLogUtils bean = new MonitorLogUtils();
         bean.cpuCore = Runtime.getRuntime().availableProcessors();
         bean.model = Build.MODEL;
         bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;

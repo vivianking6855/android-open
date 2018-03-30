@@ -55,12 +55,12 @@ final class FrameMonitor {
         long diffMs = TimeUnit.MILLISECONDS.convert(current - last, TimeUnit.NANOSECONDS);
       //  Log.w(Const.BLOCK_TAG,"diffMs="+diffMs);
         if(LogMan.getInstance().getIsDrawing() && diffMs != 0){
-            LogMan.getInstance().getLogManager().addRefreshFrameDurationCache(diffMs);
+            LogMan.getInstance().getMonitorLogUtils().addRefreshFrameDurationCache(diffMs);
         }
 
         if (diffMs > 16.6f) {
             double droppedCount = diffMs / 16.6;
-            LogMan.getInstance().getLogManager().setCost(last, current, droppedCount);
+            LogMan.getInstance().getMonitorLogUtils().setCost(last, current, droppedCount);
         }
     }
 

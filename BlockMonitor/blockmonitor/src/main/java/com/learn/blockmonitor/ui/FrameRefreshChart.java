@@ -57,7 +57,7 @@ public class FrameRefreshChart extends SurfaceView implements SurfaceHolder.Call
     public void surfaceDestroyed(SurfaceHolder holder) {
         stop = true;
         LogMan.getInstance().setIsDrawing(false);
-        LogMan.getInstance().getLogManager().clearDrawCache();
+        LogMan.getInstance().getMonitorLogUtils().clearDrawCache();
     }
 
     private class DrawThread extends Thread {
@@ -82,7 +82,7 @@ public class FrameRefreshChart extends SurfaceView implements SurfaceHolder.Call
             LogMan.getInstance().setIsDrawing(true);
             while (!stop) {
                 Canvas canvas = holder.lockCanvas();
-                ConcurrentLinkedQueue<Long> data = LogMan.getInstance().getLogManager().getDrawCacheData();
+                ConcurrentLinkedQueue<Long> data = LogMan.getInstance().getMonitorLogUtils().getDrawCacheData();
                 while (data.size() < DRAW_FRAME_COUNT) {
                     try {
                         sleep(100);
