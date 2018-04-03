@@ -12,15 +12,15 @@ public class LogModel {
     /**
      * The constant TYPE_STACK.
      */
-    public final static int TYPE_STACK = 1;
+    final static int TYPE_STACK = 1;
     /**
      * The constant TYPE_CPU.
      */
-    public final static int TYPE_CPU = 2;
+    final static int TYPE_CPU = 2;
     /**
      * The constant TYPE_DEVICE.
      */
-    public final static int TYPE_DEVICE = 3;
+    final static int TYPE_DEVICE = 3;
 
     @LogType
     private int type;
@@ -44,7 +44,7 @@ public class LogModel {
      *
      * @return the log model
      */
-    public static LogModel obtain(){
+    static LogModel obtain(){
         return new LogModel();
     }
 
@@ -81,7 +81,7 @@ public class LogModel {
      *
      * @param type the type
      */
-    public void setType(@LogType int type) {
+    void setType(@LogType int type) {
         this.type = type;
     }
 }

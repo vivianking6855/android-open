@@ -18,7 +18,7 @@ public class BlockStackModel {
      *
      * @return the block stack log entity
      */
-    public static BlockStackModel obtain() {
+    static BlockStackModel obtain() {
         return new BlockStackModel();
     }
 
@@ -45,7 +45,7 @@ public class BlockStackModel {
      *
      * @param device the device
      */
-    public void setDevice(LogModel device) {
+    void setDevice(LogModel device) {
         this.device = device;
     }
 
@@ -54,7 +54,7 @@ public class BlockStackModel {
      *
      * @param cpu the cpu
      */
-    public void setCpu(LogModel cpu) {
+    void setCpu(LogModel cpu) {
         this.cpu = cpu;
     }
 
