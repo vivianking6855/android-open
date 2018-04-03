@@ -23,5 +23,11 @@ public abstract class BaseMVPActivity<V, T extends BasePresenter<V>> extends Bas
         mPresenter.attachReference((V) this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachReference();
+    }
+
     protected abstract T createPresenter();
 }
