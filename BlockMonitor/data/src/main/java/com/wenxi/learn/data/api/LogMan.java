@@ -39,7 +39,7 @@ public class LogMan {
     private ArrayList<StringBuilder> stackTraceBuilder = new ArrayList<>();
 
     // log bean, all log information here
-    private LogFormat monitorLogUtils;
+    private LogFormat logFormat;
 
     // log already start or not
     private boolean isRunning;
@@ -81,8 +81,8 @@ public class LogMan {
     public void init(Context context, IMonitorListener listener) {
         mListener = listener;
         mContextRef = new WeakReference<>(context);
-        if (monitorLogUtils == null) {
-            monitorLogUtils = LogFormat.build(context);
+        if (logFormat == null) {
+            logFormat = new LogFormat(context);
         }
         if (mConfig == null) {
             mConfig = new Config();
@@ -121,8 +121,8 @@ public class LogMan {
             Log.w(Const.BLOCK_TAG, "LogMan stop ex", e);
         }
         clearCache();
-        monitorLogUtils.destroy();
-        monitorLogUtils = null;
+        logFormat.destroy();
+        logFormat = null;
     }
 
     /**
@@ -151,7 +151,7 @@ public class LogMan {
             Log.d(Const.BLOCK_TAG, "LogMan get block! dump them!");
             // deal stack trace
             collectStackTrace(true);
-            monitorLogUtils.setStackEntries(stackTraceBuilder);
+            logFormat.setStackEntries(stackTraceBuilder);
             // debug
             //     dumpStackTrace2LogCat();
             dumpStackTrace2File();
@@ -199,7 +199,7 @@ public class LogMan {
             @Override
             public void run() {
                 FileUtils.writeFileFromString(getLogPath(mContextRef.get()),
-                        monitorLogUtils.getHeaderString(), false);
+                        logFormat.getHeaderString(), false);
             }
         });
     }
@@ -208,8 +208,8 @@ public class LogMan {
      * dump stack to target file
      */
     private void dumpStackTrace2File() {
-        final String traceLog = monitorLogUtils.getStackString();
-        final String cpulog = monitorLogUtils.getCPUStat(CPUSample.getInstance().sample());
+        final String traceLog = logFormat.getStackString();
+        final String cpulog = logFormat.getCPUStat(CPUSample.getInstance().sample());
         FileTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
@@ -249,7 +249,7 @@ public class LogMan {
     }
 
     public LogFormat getMonitorLogUtils() {
-        return monitorLogUtils;
+        return logFormat;
     }
 
     public File getLogPath(Context context) {

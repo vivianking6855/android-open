@@ -5,6 +5,7 @@ import android.os.Build;
 
 import com.open.utislib.device.DeviceUtils;
 import com.open.utislib.time.TimeUtils;
+import com.wenxi.learn.data.entity.LogEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,13 +17,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class LogFormat {
     //private static final int MAX_CACHE_SIZE = 100;
-    // all logs for user
-    private String model = "";
-    private String apiLevel = "";
-    private String imei = "";
-    private int cpuCore = -1;
-    private String freeMemory;
-    private String totalMemory;
+
+    private LogEntity mLogEntity;
 
     // default time format  "yyyy-MM-dd HH:mm:ss";
     private static final SimpleDateFormat TIME_FORMATTER =
@@ -48,13 +44,7 @@ public class LogFormat {
     private static final String HEAD_TOTAL_MEMORY = "[app total memory] ";
     private static final String HEAD_FREE_MEMORY = "[system free memory] ";
 
-    private long timeCost; // time diff between two frames
-    private double droppedCount; // drop frame count
-    private String timeStart;
-    private String timeEnd;
-    private boolean cpuBusy;
     private ArrayList<StringBuilder> stackList = new ArrayList<>();
-
     private StringBuilder headStr = new StringBuilder();
     private StringBuilder stackStr = new StringBuilder();
     private StringBuilder cpuStr = new StringBuilder();
@@ -67,18 +57,16 @@ public class LogFormat {
      *
      * @return the log bean
      */
-    public static LogFormat build(Context context) {
-        LogFormat bean = new LogFormat();
-        bean.cpuCore = Runtime.getRuntime().availableProcessors();
-        bean.model = Build.MODEL;
-        bean.apiLevel = Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE;
-        bean.freeMemory = String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M";
-        bean.totalMemory = String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M";
+    public LogFormat(Context context) {
+        mLogEntity = new LogEntity();
+        mLogEntity.setCpuCore(Runtime.getRuntime().availableProcessors());
+        mLogEntity.setModel(Build.MODEL);
+        mLogEntity.setApiLevel(Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE);
+        mLogEntity.setFreeMemory(String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M");
+        mLogEntity.setTotalMemory(String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M");
         String imeipre = DeviceUtils.getIMEI(context);
-        bean.imei = imeipre == null ? EMPTY_IMEI : imeipre;
-        return bean;
+        mLogEntity.setImei(imeipre == null ? EMPTY_IMEI : imeipre);
     }
-
 
     /**
      * Sets stack entries.
@@ -97,10 +85,10 @@ public class LogFormat {
      * @param droppedCount drop frame count
      */
     public void setCost(long timeStart, long timeEnd, double droppedCount) {
-        this.timeCost = timeEnd - timeStart;
-        this.droppedCount = droppedCount;
-        this.timeStart = TIME_FORMATTER.format(timeStart);
-        this.timeEnd = TIME_FORMATTER.format(timeEnd);
+        mLogEntity.setTimeCost(timeEnd - timeStart);
+        mLogEntity.setDroppedCount(droppedCount);
+        mLogEntity.setTimeStart(TIME_FORMATTER.format(timeStart));
+        mLogEntity.setTimeEnd(TIME_FORMATTER.format(timeEnd));
     }
 
     /**
@@ -113,7 +101,7 @@ public class LogFormat {
             cpuStr.delete(0, cpuStr.length());
         }
         return cpuStr.append(HEAD_CPU_STAT).append(cpuStat).append(SEPARATOR).
-                append(HEAD_CPU_BUSY).append(cpuBusy).append(SEPARATOR).toString();
+                append(HEAD_CPU_BUSY).append(mLogEntity.isCpuBusy()).append(SEPARATOR).toString();
     }
 
     /**
@@ -128,12 +116,12 @@ public class LogFormat {
 
         headStr.append(HEAD_START).append(TimeUtils.getNowTimeString())
                 .append(LINE).append(SEPARATOR);
-        headStr.append(HEAD_MODEL).append(model).append(SEPARATOR);
-        headStr.append(HEAD_API).append(apiLevel).append(SEPARATOR);
-        headStr.append(HEAD_IMEI).append(imei).append(SEPARATOR);
-        headStr.append(HEAD_CPU_CORE).append(cpuCore).append(SEPARATOR);
-        headStr.append(HEAD_FREE_MEMORY).append(freeMemory).append(SEPARATOR);
-        headStr.append(HEAD_TOTAL_MEMORY).append(totalMemory).append(SEPARATOR);
+        headStr.append(HEAD_MODEL).append(mLogEntity.getModel()).append(SEPARATOR);
+        headStr.append(HEAD_API).append(mLogEntity.getApiLevel()).append(SEPARATOR);
+        headStr.append(HEAD_IMEI).append(mLogEntity.getImei()).append(SEPARATOR);
+        headStr.append(HEAD_CPU_CORE).append(mLogEntity.getCpuCore()).append(SEPARATOR);
+        headStr.append(HEAD_FREE_MEMORY).append(mLogEntity.getFreeMemory()).append(SEPARATOR);
+        headStr.append(HEAD_TOTAL_MEMORY).append(mLogEntity.getTotalMemory()).append(SEPARATOR);
 
         return headStr.toString();
     }
@@ -148,10 +136,10 @@ public class LogFormat {
             stackStr.delete(0, stackStr.length());
         }
 
-        stackStr.append(HEAD_TIME_COST).append(timeCost).append(SEPARATOR);
-        stackStr.append(HEAD_TIME_COST_START).append(timeStart).append(SEPARATOR);
-        stackStr.append(HEAD_TIME_COST_END).append(timeEnd).append(SEPARATOR);
-        stackStr.append(HEAD_DROP).append(droppedCount).append(SEPARATOR);
+        stackStr.append(HEAD_TIME_COST).append(mLogEntity.getTimeCost()).append(SEPARATOR);
+        stackStr.append(HEAD_TIME_COST_START).append(mLogEntity.getTimeStart()).append(SEPARATOR);
+        stackStr.append(HEAD_TIME_COST_END).append(mLogEntity.getTimeEnd()).append(SEPARATOR);
+        stackStr.append(HEAD_DROP).append(mLogEntity.getDroppedCount()).append(SEPARATOR);
         stackStr.append(HEAD_STACK).append(SEPARATOR);
 
         if (stackList != null && !stackList.isEmpty()) {
