@@ -9,7 +9,6 @@ import com.learn.blockmonitor.view.BlockNotification;
 import com.wenxi.learn.data.api.FrameMonitor;
 import com.wenxi.learn.data.api.LogMan;
 import com.wenxi.learn.data.config.IConfig;
-import com.wenxi.learn.data.listener.IMonitorListener;
 
 /**
  * BlockMonitor is singleton mode
@@ -59,7 +58,7 @@ public class BlockMonitor {
         // init block monitor
         mContext = context;
         // init log man, such as sticky device info
-        LogMan.getInstance().init(context.getApplicationContext(), (IMonitorListener) new BlockNotification(context));
+        LogMan.getInstance().init(context.getApplicationContext(), new BlockNotification(context));
     }
 
     /**
