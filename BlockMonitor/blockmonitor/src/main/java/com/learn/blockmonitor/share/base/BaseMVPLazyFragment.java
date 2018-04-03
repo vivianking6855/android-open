@@ -19,6 +19,12 @@ public abstract class BaseMVPLazyFragment<V, T extends BasePresenter<V>> extends
         mPresenter.attachReference((V) this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachReference();
+    }
+
     protected abstract T createPresenter();
 
 }
