@@ -17,10 +17,10 @@ public abstract class BaseMVPActivity<V, T extends BasePresenter<V>> extends Bas
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         // create presenter
         mPresenter = createPresenter();
         mPresenter.attachReference((V) this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
