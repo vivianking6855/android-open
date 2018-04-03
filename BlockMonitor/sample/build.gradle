@@ -24,6 +24,6 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:support-vector-drawable:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.learn.blockmonitor:AndroidBlockMonitor:1.0.180326'
-    // implementation project(':blockmonitor')
+    //implementation 'com.learn.blockmonitor:AndroidBlockMonitor:1.0.180326'
+    implementation project(':blockmonitor')
 }

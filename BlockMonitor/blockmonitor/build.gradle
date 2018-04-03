@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.open.library:utilslib:1.0.180326'
     implementation group: 'com.android.support', name: 'appcompat-v7', version: '26.1.0'
     implementation 'com.android.support:design:26.1.0'
+    implementation project(':data')
 }

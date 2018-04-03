@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.learn.blockmonitor.customized.Config;
-import com.learn.blockmonitor.customized.IConfig;
-import com.learn.blockmonitor.dumplog.LogMan;
-import com.learn.blockmonitor.util.Const;
+import com.learn.blockmonitor.share.util.Const;
+import com.learn.blockmonitor.view.BlockNotification;
+import com.wenxi.learn.data.api.FrameMonitor;
+import com.wenxi.learn.data.api.LogMan;
+import com.wenxi.learn.data.config.IConfig;
+import com.wenxi.learn.data.listener.IMonitorListener;
 
 /**
  * BlockMonitor is singleton mode
@@ -17,8 +19,6 @@ public class BlockMonitor {
     // singleton instance
     @SuppressLint("StaticFieldLeak")
     private volatile static BlockMonitor instance = null;
-    // config for dump information
-    private IConfig mConfig;
     // is start or not
     private boolean isStart = false;
     private Context mContext;
@@ -58,11 +58,8 @@ public class BlockMonitor {
     private void init(Context context) {
         // init block monitor
         mContext = context;
-        if (mConfig == null) {
-            mConfig = new Config();
-        }
         // init log man, such as sticky device info
-        LogMan.getInstance().init(context.getApplicationContext());
+        LogMan.getInstance().init(context.getApplicationContext(), (IMonitorListener) new BlockNotification(context));
     }
 
     /**
@@ -97,22 +94,25 @@ public class BlockMonitor {
 
     /**
      * set config, such as time block
+     *
      * @param config customised IConfig
      */
     public void setConfig(IConfig config) {
-        mConfig = config;
+        LogMan.getInstance().setConfig(config);
     }
 
     /**
      * get config, such as time block
+     *
      * @return IConfig
      */
     public IConfig getConfig() {
-        return mConfig;
+        return LogMan.getInstance().getConfig();
     }
 
     /**
      * get context, such as time block
+     *
      * @return Context
      */
     public Context getContext() {
@@ -121,6 +121,7 @@ public class BlockMonitor {
 
     /**
      * get context, such as time block
+     *
      * @return String
      */
     public String getLogPath() {
