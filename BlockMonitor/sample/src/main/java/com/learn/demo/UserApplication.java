@@ -31,7 +31,7 @@ public class UserApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        BlockMonitor.getInstance().install(this).start();
+        BlockMonitor.install(this).start();
     }
 
     /**
