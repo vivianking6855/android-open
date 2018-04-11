@@ -198,7 +198,7 @@ public class LogMan {
         FileTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                FileUtils.writeFileFromString(getLogPath(mContextRef.get()),
+                FileUtils.writeFileFromString(getLogPath(),
                         logFormat.getHeaderString(), false);
             }
         });
@@ -213,7 +213,7 @@ public class LogMan {
         FileTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                FileUtils.writeFileFromString(getLogPath(mContextRef.get()),
+                FileUtils.writeFileFromString(getLogPath(),
                         cpulog + traceLog, true);
             }
         });
@@ -252,10 +252,9 @@ public class LogMan {
         return logFormat;
     }
 
-    public File getLogPath(Context context) {
-        return PathUtils.getDiskCacheDir(context,
-                mConfig.getLogPath()
-                        + File.separator + Const.LOG_FILE_NAME);
+    public File getLogPath() {
+        return PathUtils.getDiskCacheDir(mContextRef.get(),
+                mConfig.getLogPath() + File.separator + Const.LOG_FILE_NAME);
     }
 
     public void setIsDrawing(boolean drawing) {

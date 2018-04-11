@@ -2,7 +2,7 @@ package com.learn.blockmonitor.model;
 
 import android.os.AsyncTask;
 
-import com.learn.blockmonitor.BlockMonitor;
+import com.wenxi.learn.data.api.LogMan;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ public class FileLogProvider implements ILogProvider<List<BlockStackModel>,Strin
     private static final String SEPARATOR = "\n";
     @Override
     public void fetchLogAsync(IFetchLogListener<List<BlockStackModel>,String> listener) {
-        new LoadLogTask(listener).execute(BlockMonitor.getInstance().getLogPath());
+        new LoadLogTask(listener).execute(LogMan.getInstance().getLogPath().getPath());
     }
 
     private static class LoadLogTask extends AsyncTask<String, Void, List<BlockStackModel>> {

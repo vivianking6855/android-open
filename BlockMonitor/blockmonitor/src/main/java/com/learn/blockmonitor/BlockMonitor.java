@@ -30,7 +30,7 @@ public class BlockMonitor {
      *
      * @return the instance
      */
-    public static BlockMonitor getInstance() {
+    private static BlockMonitor getInstance() {
         if (instance == null) {
             synchronized (BlockMonitor.class) {
                 if (instance == null) {
@@ -123,8 +123,8 @@ public class BlockMonitor {
      *
      * @return String
      */
-    public String getLogPath() {
-        return LogMan.getInstance().getLogPath(mContext).getPath();
-    }
+   /* private String getLogPath() {
+        return LogMan.getInstance().getLogPath().getPath();
+    }*/
 
 }
