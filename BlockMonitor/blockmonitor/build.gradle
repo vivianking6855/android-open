@@ -6,7 +6,7 @@ publish {
     userOrg = 'vivianwayne1985'//organization，初次注册需要到bintray.com创建一个
     groupId = 'com.learn.blockmonitor'//jcenter上的路径
     artifactId = 'AndroidBlockMonitor'//项目名称
-    publishVersion = '1.0.180412'//版本号
+    publishVersion = '1.0.180414'//版本号
     desc = 'this is block monitor library for android'//描述，不重要
     website = 'http://vivianking6855.github.io'//网站，最好有，不重要
 }
@@ -17,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 180413
-        versionName "1.0.180413"
+        versionCode 180414
+        versionName "1.0.180414"
     }
 
     buildTypes {
