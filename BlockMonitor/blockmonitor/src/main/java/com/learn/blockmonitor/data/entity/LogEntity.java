@@ -1,4 +1,4 @@
-package com.wenxi.learn.data.entity;
+package com.learn.blockmonitor.data.entity;
 
 /**
  * The type Log entity.

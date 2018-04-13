@@ -1,4 +1,4 @@
-package com.wenxi.learn.data.config;
+package com.learn.blockmonitor.data.config;
 
 /**
  * default config

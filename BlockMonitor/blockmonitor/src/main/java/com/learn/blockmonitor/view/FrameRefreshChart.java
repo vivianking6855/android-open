@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.wenxi.learn.data.api.LogMan;
+import com.learn.blockmonitor.data.api.LogMan;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

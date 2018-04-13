@@ -1,7 +1,6 @@
 package com.learn.demo.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -15,7 +14,8 @@ import java.util.Arrays;
 
 public class MainActivity extends BaseActivity {
     private HomeRecyclerAdapter mAdapter;
-   // private Handler handler = new Handler();
+
+    // private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +61,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-       // BlockMonitor.getInstance().stop();
+        // BlockMonitor.getInstance().stop();
     }
 }

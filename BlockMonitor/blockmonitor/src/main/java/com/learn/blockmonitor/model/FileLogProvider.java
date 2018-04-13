@@ -2,7 +2,7 @@ package com.learn.blockmonitor.model;
 
 import android.os.AsyncTask;
 
-import com.wenxi.learn.data.api.LogMan;
+import com.learn.blockmonitor.data.api.LogMan;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

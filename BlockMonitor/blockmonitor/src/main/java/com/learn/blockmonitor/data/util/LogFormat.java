@@ -1,11 +1,11 @@
-package com.wenxi.learn.data.util;
+package com.learn.blockmonitor.data.util;
 
 import android.content.Context;
 import android.os.Build;
 
+import com.learn.blockmonitor.data.entity.LogEntity;
 import com.open.utislib.device.DeviceUtils;
 import com.open.utislib.time.TimeUtils;
-import com.wenxi.learn.data.entity.LogEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class LogFormat {
     /**
      * Build log bean.
      *
-     * @return the log bean
+     * @param context context
      */
     public LogFormat(Context context) {
         mLogEntity = new LogEntity();
@@ -95,6 +95,7 @@ public class LogFormat {
      * Sets CPU stat.
      *
      * @param cpuStat cpu and process stat
+     * @return cpu stat
      */
     public String getCPUStat(String cpuStat) {
         if (cpuStr.length() > 0) {

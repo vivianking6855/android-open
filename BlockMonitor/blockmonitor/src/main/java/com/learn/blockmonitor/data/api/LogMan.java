@@ -1,4 +1,4 @@
-package com.wenxi.learn.data.api;
+package com.learn.blockmonitor.data.api;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,16 +6,16 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import com.learn.blockmonitor.data.config.Config;
+import com.learn.blockmonitor.data.config.IConfig;
+import com.learn.blockmonitor.data.listener.IMonitorListener;
+import com.learn.blockmonitor.data.task.FileTask;
+import com.learn.blockmonitor.data.util.Const;
+import com.learn.blockmonitor.data.util.LogFormat;
 import com.open.utislib.device.CPUSample;
 import com.open.utislib.file.FileUtils;
 import com.open.utislib.file.PathUtils;
 import com.open.utislib.time.TimeUtils;
-import com.wenxi.learn.data.config.Config;
-import com.wenxi.learn.data.config.IConfig;
-import com.wenxi.learn.data.listener.IMonitorListener;
-import com.wenxi.learn.data.task.FileTask;
-import com.wenxi.learn.data.util.Const;
-import com.wenxi.learn.data.util.LogFormat;
 
 import java.io.File;
 import java.lang.ref.Reference;
@@ -76,7 +76,8 @@ public class LogMan {
     /**
      * init data
      *
-     * @param context Context
+     * @param context  Context
+     * @param listener data monitor {@link IMonitorListener}
      */
     public void init(Context context, IMonitorListener listener) {
         mListener = listener;

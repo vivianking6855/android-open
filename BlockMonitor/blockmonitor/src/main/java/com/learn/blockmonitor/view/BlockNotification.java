@@ -3,7 +3,7 @@ package com.learn.blockmonitor.view;
 import android.content.Context;
 
 import com.learn.blockmonitor.share.util.NotificationUtil;
-import com.wenxi.learn.data.listener.IMonitorListener;
+import com.learn.blockmonitor.data.listener.IMonitorListener;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

@@ -6,9 +6,9 @@ import android.util.Log;
 
 import com.learn.blockmonitor.share.util.Const;
 import com.learn.blockmonitor.view.BlockNotification;
-import com.wenxi.learn.data.api.FrameMonitor;
-import com.wenxi.learn.data.api.LogMan;
-import com.wenxi.learn.data.config.IConfig;
+import com.learn.blockmonitor.data.api.FrameMonitor;
+import com.learn.blockmonitor.data.api.LogMan;
+import com.learn.blockmonitor.data.config.IConfig;
 
 /**
  * BlockMonitor is singleton mode
@@ -117,14 +117,5 @@ public class BlockMonitor {
     public Context getContext() {
         return mContext;
     }
-
-    /**
-     * get context, such as time block
-     *
-     * @return String
-     */
-   /* private String getLogPath() {
-        return LogMan.getInstance().getLogPath().getPath();
-    }*/
 
 }

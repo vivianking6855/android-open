@@ -1,4 +1,4 @@
-package com.wenxi.learn.data.config;
+package com.learn.blockmonitor.data.config;
 
 /**
  * all config in BlockMonitor, such path, block threshold, etc.
