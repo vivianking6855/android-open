@@ -1,8 +1,10 @@
 package com.learn.blockmonitor.model;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.learn.blockmonitor.data.api.LogMan;
+import com.learn.blockmonitor.data.util.Const;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,22 +17,26 @@ import java.util.List;
 
 /**
  * Created by Venjee_Shen on 2018/4/3.
- *
  */
 
 
-public class FileLogProvider implements ILogProvider<List<BlockStackModel>,String> {
+public class FileLogProvider implements ILogProvider<List<BlockStackModel>, String> {
 
     private static final String SEPARATOR = "\n";
+
     @Override
-    public void fetchLogAsync(IFetchLogListener<List<BlockStackModel>,String> listener) {
-        new LoadLogTask(listener).execute(LogMan.getInstance().getLogPath().getPath());
+    public void fetchLogAsync(IFetchLogListener<List<BlockStackModel>, String> listener) {
+        try {
+            new LoadLogTask(listener).execute(LogMan.getInstance().getLogPath().getPath());
+        } catch (Exception e) {
+            Log.w(Const.BLOCK_TAG, "fetchLogAsync ex", e);
+        }
     }
 
     private static class LoadLogTask extends AsyncTask<String, Void, List<BlockStackModel>> {
-        WeakReference<IFetchLogListener<List<BlockStackModel>,String>> listenerWeakReference;
+        WeakReference<IFetchLogListener<List<BlockStackModel>, String>> listenerWeakReference;
 
-        LoadLogTask(IFetchLogListener<List<BlockStackModel>,String> fr) {
+        LoadLogTask(IFetchLogListener<List<BlockStackModel>, String> fr) {
             listenerWeakReference = new WeakReference<>(fr);
         }
 
@@ -76,9 +82,9 @@ public class FileLogProvider implements ILogProvider<List<BlockStackModel>,Strin
                 return mergedEntityList;
             } catch (IOException e) {
                 e.printStackTrace();
-                IFetchLogListener<List<BlockStackModel>,String> fr = listenerWeakReference.get();
+                IFetchLogListener<List<BlockStackModel>, String> fr = listenerWeakReference.get();
                 if (fr != null) {
-                   fr.onError(e.toString());
+                    fr.onError(e.toString());
                 }
             } finally {
                 if (bufferedReader != null) {
@@ -94,11 +100,11 @@ public class FileLogProvider implements ILogProvider<List<BlockStackModel>,Strin
 
         @Override
         protected void onPostExecute(List<BlockStackModel> result) {
-            IFetchLogListener<List<BlockStackModel>,String> fr = listenerWeakReference.get();
+            IFetchLogListener<List<BlockStackModel>, String> fr = listenerWeakReference.get();
             if (fr != null) {
-                if(result == null){
+                if (result == null) {
                     fr.onError("fetch log error");
-                }else {
+                } else {
                     fr.onSuccess(result);
                 }
             }

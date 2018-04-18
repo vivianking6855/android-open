@@ -46,11 +46,11 @@ jCenter发布地址：[https://bintray.com/vivianwayne1985/maven/AndroidBlockMon
 
 2. 暂停
 
-    BlockMonitor.getInstance().install(this).stop();
+    BlockMonitor.install(this).stop();
 
 3. 卸载
     
-    BlockMonitor.getInstance().install(this).uninstall();
+    BlockMonitor.install(this).uninstall();
 
 
 # 效果
@@ -68,6 +68,31 @@ Log详情
    ![](https://i.imgur.com/Anob1Tk.jpg)
 
 空白部分后期会显示波形图（Frame-Time，Frame-DropCount等）
+
+monitor生成的log信息文件默认存放在sdcard/Android/data/package name/block_log/
+
+用户可以通过自定义UserConfig extends Config，通过方法 setConfig
+
+    public class Config implements IConfig {
+        private static final long TIME_BLOCK = 80 ;// 80ms = 5*16.6ms
+        private static final String PATH = "/block_log/";
+    
+        @Override
+        public long getBlockThreshold() {
+            return TIME_BLOCK;
+        }
+    
+        @Override
+        public String getLogPath() {
+            return PATH;
+        }
+    
+        @Override
+        public String getAppendix() {
+            return "";
+        }
+    }
+
 
 # log信息
 

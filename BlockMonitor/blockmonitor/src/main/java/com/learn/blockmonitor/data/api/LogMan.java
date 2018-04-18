@@ -19,7 +19,6 @@ import com.open.utislib.time.TimeUtils;
 
 import java.io.File;
 import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -76,14 +75,14 @@ public class LogMan {
     /**
      * init data
      *
-     * @param context  Context
+     * @param context  context
      * @param listener data monitor {@link IMonitorListener}
      */
-    public void init(Context context, IMonitorListener listener) {
+    public void init(Reference<Context> context, IMonitorListener listener) {
         mListener = listener;
-        mContextRef = new WeakReference<>(context);
+        mContextRef = context;
         if (logFormat == null) {
-            logFormat = new LogFormat(context);
+            logFormat = new LogFormat(mContextRef.get());
         }
         if (mConfig == null) {
             mConfig = new Config();
@@ -196,6 +195,9 @@ public class LogMan {
      * deal device sticky info, such as cpu count
      */
     private void writeStickyLog2File() {
+        if (mContextRef == null || mContextRef.get() == null) {
+            return;
+        }
         FileTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
@@ -209,6 +211,9 @@ public class LogMan {
      * dump stack to target file
      */
     private void dumpStackTrace2File() {
+        if (mContextRef == null || mContextRef.get() == null) {
+            return;
+        }
         final String traceLog = logFormat.getStackString();
         final String cpulog = logFormat.getCPUStat(CPUSample.getInstance().sample());
         FileTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
@@ -254,6 +259,9 @@ public class LogMan {
     }
 
     public File getLogPath() {
+        if (mContextRef == null || mContextRef.get() == null) {
+            return null;
+        }
         return PathUtils.getDiskCacheDir(mContextRef.get(),
                 mConfig.getLogPath() + File.separator + Const.LOG_FILE_NAME);
     }

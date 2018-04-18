@@ -4,15 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.learn.blockmonitor.share.util.Const;
-import com.learn.blockmonitor.view.BlockNotification;
 import com.learn.blockmonitor.data.api.FrameMonitor;
 import com.learn.blockmonitor.data.api.LogMan;
 import com.learn.blockmonitor.data.config.IConfig;
+import com.learn.blockmonitor.share.util.Const;
+import com.learn.blockmonitor.view.BlockNotification;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 /**
  * BlockMonitor is singleton mode
  * call install method to initial it
+ * default monitor file will be place sdcard/Android/data/package name/block_log/
  */
 public class BlockMonitor {
     // singleton instance
@@ -20,7 +24,7 @@ public class BlockMonitor {
     private volatile static BlockMonitor instance = null;
     // is start or not
     private boolean isStart = false;
-    private Context mContext;
+    private Reference<Context> mContextRef;
 
     private BlockMonitor() {
     }
@@ -54,11 +58,24 @@ public class BlockMonitor {
         return monitor;
     }
 
+    public static BlockMonitor install(Context context, IConfig config) {
+        Log.d(Const.BLOCK_TAG, "BlockMonitor install with config");
+        BlockMonitor monitor = BlockMonitor.install(context);
+        if (config != null) {
+            monitor.setConfig(config);
+        }
+        return monitor;
+    }
+
     private void init(Context context) {
+        // do not init again, if already init before
+        if (mContextRef != null && mContextRef.get() != null) {
+            return;
+        }
         // init block monitor
-        mContext = context;
+        mContextRef = new WeakReference<>(context);
         // init log man, such as sticky device info
-        LogMan.getInstance().init(context.getApplicationContext(), new BlockNotification(context));
+        LogMan.getInstance().init(mContextRef, new BlockNotification(mContextRef));
     }
 
     /**
@@ -96,7 +113,7 @@ public class BlockMonitor {
      *
      * @param config customised IConfig
      */
-    public void setConfig(IConfig config) {
+    private void setConfig(IConfig config) {
         LogMan.getInstance().setConfig(config);
     }
 
@@ -105,17 +122,8 @@ public class BlockMonitor {
      *
      * @return IConfig
      */
-    public IConfig getConfig() {
+    public static IConfig getConfig() {
         return LogMan.getInstance().getConfig();
-    }
-
-    /**
-     * get context, such as time block
-     *
-     * @return Context
-     */
-    public Context getContext() {
-        return mContext;
     }
 
 }

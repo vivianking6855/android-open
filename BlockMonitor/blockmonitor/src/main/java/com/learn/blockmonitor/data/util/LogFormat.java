@@ -62,10 +62,12 @@ public class LogFormat {
         mLogEntity.setCpuCore(Runtime.getRuntime().availableProcessors());
         mLogEntity.setModel(Build.MODEL);
         mLogEntity.setApiLevel(Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE);
-        mLogEntity.setFreeMemory(String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M");
         mLogEntity.setTotalMemory(String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M");
-        String imeipre = DeviceUtils.getIMEI(context);
-        mLogEntity.setImei(imeipre == null ? EMPTY_IMEI : imeipre);
+        if(context != null){
+            mLogEntity.setFreeMemory(String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M");
+            String imeipre = DeviceUtils.getIMEI(context);
+            mLogEntity.setImei(imeipre == null ? EMPTY_IMEI : imeipre);
+        }
     }
 
     /**
