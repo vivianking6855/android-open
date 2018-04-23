@@ -35,6 +35,13 @@ jCenter发布地址：[https://bintray.com/vivianwayne1985/maven/AndroidBlockMon
       <type>pom</type>
     </dependency>
     
+   You can exclude these dependency library if needed
+    
+    implementation('com.learn.blockmonitor:AndroidBlockMonitor:1.0.180418') {
+        exclude group: 'com.android.support'
+        exclude group: 'com.open.library'
+    }    
+    
     
 1. 加载和启动Application的OnCreate
 
@@ -73,26 +80,23 @@ monitor生成的log信息文件默认存放在sdcard/Android/data/package name/b
 
 用户可以通过自定义UserConfig extends Config，通过方法 setConfig
 
-    public class Config implements IConfig {
-        private static final long TIME_BLOCK = 80 ;// 80ms = 5*16.6ms
-        private static final String PATH = "/block_log/";
+    BlockMonitor.install(this, new UserConfig()).start();
+  
+    UserConfig------------------------------------------
+  
+    package com.learn.debugdemo;
+
+    import com.learn.blockmonitor.data.config.Config;
+    
+    public class UserConfig extends Config{
+        private static final long TIME_USER_BLOCK = 160 ;// 160ms = 10*16.6ms
     
         @Override
         public long getBlockThreshold() {
-            return TIME_BLOCK;
+            return TIME_USER_BLOCK;
         }
     
-        @Override
-        public String getLogPath() {
-            return PATH;
-        }
-    
-        @Override
-        public String getAppendix() {
-            return "";
-        }
     }
-
 
 # log信息
 
