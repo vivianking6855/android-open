@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release' // publish tool
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.1'
+    }
+}
+
+// publish
+publish {
+    userOrg = 'viviankingdou'//organization，初次注册需要到bintray.com创建一个
+    groupId = 'com.open.library'//jcenter上的路径
+    artifactId = 'utils'//项目名称
+    publishVersion = '1.0.180509'//版本号
+    desc = 'this is util library for android'//描述，不重要
+    website = 'http://vivianking6855.github.io'//网站，最好有，不重要
+}
+
+android {
+    compileSdkVersion 25
+
+    compileOptions {// java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 180509
+        versionName "1.0.180509"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-annotations:28.0.0-alpha1'
+}
