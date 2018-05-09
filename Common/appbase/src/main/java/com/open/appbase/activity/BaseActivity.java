@@ -27,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * set layout data.
+     * @return layout id
      */
     protected abstract int getLayout();
 
