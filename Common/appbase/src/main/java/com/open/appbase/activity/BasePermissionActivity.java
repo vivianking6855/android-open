@@ -1,23 +1,29 @@
 package com.open.appbase.activity;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.open.appbase.R;
-
 /**
  * The type Base permission activity.
  * BasePermissionActivity used for granted dangerous after M
  * include dangerous permission, Setting write permission and Overlay Permission
+ * use it like
+ * public static final String READ_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
+ * protected String[] getPermissions() {
+ * return new String[]{READ_STORAGE};
+ * }
+ * <p>
+ * you should call setAlterDialogStrings to set AlertDialogue strings when user choose never show
+ * <p>
  *
  * @author vivian
  */
@@ -34,6 +40,8 @@ public abstract class BasePermissionActivity extends BaseActivity {
     private boolean mSystemPermissionShowing = false;
     // hint dialogue for never show
     private AlertDialog mNeverShowHintDlg;
+    // never show hint strings
+    private static int[] neverShowRes;
 
     /**
      * Get permissions string [ ].
@@ -75,6 +83,11 @@ public abstract class BasePermissionActivity extends BaseActivity {
      * Write settings permission granted.
      */
     protected void writeSettingsGranted() {
+    }
+
+    protected void setAlterDialogStrings(@StringRes int title, @StringRes int message,
+                                         @StringRes int positive, @StringRes int negative) {
+        neverShowRes = new int[]{title, message, positive, negative};
     }
 
     @Override
@@ -162,7 +175,7 @@ public abstract class BasePermissionActivity extends BaseActivity {
         for (int i = 0; i < permissions.length; i++) {
             // if user choose never show before, request system permission will not work
             boolean never_show = !ActivityCompat.shouldShowRequestPermissionRationale(BasePermissionActivity.this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    permissions[i]);
             if (never_show) {
                 return true;
             }
@@ -199,18 +212,22 @@ public abstract class BasePermissionActivity extends BaseActivity {
      * show never show hint dlg
      */
     private void showNeverShowHintDialogue() {
+        if (neverShowRes == null) {
+            return;
+        }
+
         mNeverShowHintDlg = new AlertDialog.Builder(BasePermissionActivity.this)
                 .setCancelable(false)
-                .setTitle(getString(R.string.grant_permission_title))
-                .setMessage(getString(R.string.grant_permission))
-                .setPositiveButton(getString(R.string.grant_setting), new DialogInterface.OnClickListener() {
+                .setTitle(getString(neverShowRes[0]))
+                .setMessage(getString(neverShowRes[1]))
+                .setPositiveButton(getString(neverShowRes[2]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // user choose never show,you could change your resolution here for your project
                         gotoSettingsAppDetail();
                     }
                 })
-                .setNegativeButton(getString(R.string.grant_cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(neverShowRes[3]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         permissionDeny();

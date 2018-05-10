@@ -1,9 +1,3 @@
 <resources>
     <string name="app_name">AppBase</string>
-
-    <!-- permission -->
-    <string name="grant_permission">CacheDemo需要<strong>存储，Camera，...</strong>权限。请点击<strong>设置</strong>，然后点击<strong>应用程序信息</strong> > <strong>权限</strong>并打开</string>
-    <string name="grant_permission_title">权限提醒</string>
-    <string name="grant_setting">设置</string>
-    <string name="grant_cancel">退出</string>
 </resources>

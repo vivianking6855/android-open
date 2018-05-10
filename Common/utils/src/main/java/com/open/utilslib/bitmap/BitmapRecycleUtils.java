@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.open.utilslib.BuildConfig;
-
 /**
  * The type Bitmap utils.
  */
@@ -53,11 +51,8 @@ public class BitmapRecycleUtils {
         }
         Drawable drawable = view.getDrawable();
         if (drawable instanceof BitmapDrawable) {
-            if (BuildConfig.DEBUG) Log.d(TAG, ">>> recycleImageViewBitmap: recycle BitmapDrawable");
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             safeRecycle(bitmap);
-        } else {
-            Log.d(TAG, ">>> recycleImageViewBitmap not BitmapDrawable, no recycle");
         }
     }
 
@@ -72,14 +67,11 @@ public class BitmapRecycleUtils {
         }
         Drawable drawable = view.getBackground();
         if (drawable instanceof BitmapDrawable) {
-            Log.d(TAG, ">>> recycleViewBackground: recycle BitmapDrawable");
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             Bitmap bitmap = bitmapDrawable.getBitmap();
             view.setBackground(null);
             bitmapDrawable.setCallback(null);
             safeRecycle(bitmap);
-        } else {
-            Log.d(TAG, ">>> recycleViewBackground not BitmapDrawable, no recycle");
         }
     }
 }

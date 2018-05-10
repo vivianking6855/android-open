@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * lazy fragment: only load data if user visible fragment and data not load complete
  * you must setDataLoadCompleted(true), when your data load complete, otherwise it will load every time
  */
-public abstract class BaseLazyFragment extends Fragment {
+public abstract class BaseLazyFragment extends BaseFragment {
     // root view of Fragment
     private View mRootView;
     // if view init done
@@ -21,25 +21,6 @@ public abstract class BaseLazyFragment extends Fragment {
     private boolean isDataLoadCompleted;
     // if keep view
     private boolean isKeepRootView = true;
-
-    /**
-     * fragment layout.
-     *
-     * @return the layout
-     */
-    protected abstract int getLayout();
-
-    /**
-     * Init views.
-     *
-     * @param view the view
-     */
-    protected abstract void initViews(View view);
-
-    /**
-     * Load data.
-     */
-    protected abstract void loadData();
 
     @Nullable
     @Override
@@ -52,11 +33,12 @@ public abstract class BaseLazyFragment extends Fragment {
 
         // inflater view
         mRootView = inflater.inflate(getLayout(), container, false);
-        // init view
+
+        initData();
         initViews(mRootView);
-        // view created
         isViewCreated = true;
-        // if visible load data
+
+        // if visible load data, lazy load
         lazyLoad();
 
         return mRootView;

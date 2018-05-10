@@ -1,5 +1,5 @@
-package com.open.appbase.utils;
+package com.open.appbase.common;
 
 public final class Const {
-    public final static String TAG = "AppLib";
+    public final static String LOG_TAG = "appbase";
 }

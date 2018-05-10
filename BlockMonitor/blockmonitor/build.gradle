@@ -3,22 +3,38 @@ apply plugin: 'com.novoda.bintray-release' // publish tool
 
 // publish
 publish {
-    userOrg = 'vivianwayne1985'//organization，初次注册需要到bintray.com创建一个
-    groupId = 'com.learn.blockmonitor'//jcenter上的路径
-    artifactId = 'AndroidBlockMonitor'//项目名称
-    publishVersion = '1.0.180418'//版本号
-    desc = 'this is block monitor library for android'//描述，不重要
-    website = 'http://vivianking6855.github.io'//网站，最好有，不重要
+    userOrg = 'viviankingdou'// organization，初次注册需要到bintray.com创建一个
+    groupId = 'com.learn.blockmonitor'// jcenter上的路径，用户导入的名称
+    artifactId = 'AndroidBlockMonitor'// 项目名称
+    publishVersion = '1.0.180510'// 版本号
+    desc = 'this is block monitor library for android'// 描述，不重要
+    website = 'http://vivianking6855.github.io'// 网站，最好有，不重要
+}
+
+// bintray publish
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.1'
+    }
 }
 
 android {
     compileSdkVersion 26
 
+    // bintray publish
+    compileOptions {// java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 180418
-        versionName "1.0.180418"
+        versionCode 180510
+        versionName "1.0.180510"
     }
 
     buildTypes {
@@ -38,5 +54,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.open.library:utilslib:1.0.180409'
+    implementation 'com.open.library:utils:1.0.180510'
 }

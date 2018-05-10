@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Build;
 
 import com.learn.blockmonitor.data.entity.LogEntity;
-import com.open.utislib.device.DeviceUtils;
-import com.open.utislib.time.TimeUtils;
+import com.open.utilslib.device.DeviceUtils;
+import com.open.utilslib.time.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,9 +62,9 @@ public class LogFormat {
         mLogEntity.setCpuCore(Runtime.getRuntime().availableProcessors());
         mLogEntity.setModel(Build.MODEL);
         mLogEntity.setApiLevel(Build.VERSION.SDK_INT + " " + Build.VERSION.RELEASE);
-        mLogEntity.setTotalMemory(String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M");
+        //mLogEntity.setTotalMemory(String.valueOf(DeviceUtils.getMaxMemory() / 1024) + "M");
         if(context != null){
-            mLogEntity.setFreeMemory(String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M");
+            //mLogEntity.setFreeMemory(String.valueOf(DeviceUtils.getDeviceUsableMemory(context)) + "M");
             String imeipre = DeviceUtils.getIMEI(context);
             mLogEntity.setImei(imeipre == null ? EMPTY_IMEI : imeipre);
         }

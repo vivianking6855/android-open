@@ -6,7 +6,7 @@ publish {
     userOrg = 'viviankingdou' //organization，初次注册需要到bintray.com创建一个
     groupId = 'com.open.library'//j center上的路径，用户导入的名称
     artifactId = 'utils'// 项目名称
-    publishVersion = '1.0.180509'// 版本号
+    publishVersion = '1.0.180510'// 版本号
     desc = 'this is util library for android'// 描述，不重要
     website = 'http://vivianking6855.github.io'// 网站，最好有，不重要
 }
@@ -33,8 +33,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 180509
-        versionName "1.0.180509"
+        versionCode 180510
+        versionName "1.0.180510"
     }
     buildTypes {
         release {
