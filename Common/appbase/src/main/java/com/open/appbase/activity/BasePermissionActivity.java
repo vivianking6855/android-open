@@ -16,14 +16,12 @@ import android.util.Log;
  * The type Base permission activity.
  * BasePermissionActivity used for granted dangerous after M
  * include dangerous permission, Setting write permission and Overlay Permission
- * use it like
+ * use it like:
  * public static final String READ_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
  * protected String[] getPermissions() {
  * return new String[]{READ_STORAGE};
  * }
- * <p>
  * you should call setAlterDialogStrings to set AlertDialogue strings when user choose never show
- * <p>
  *
  * @author vivian
  */

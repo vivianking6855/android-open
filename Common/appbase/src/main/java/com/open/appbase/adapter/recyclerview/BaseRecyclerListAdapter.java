@@ -1,4 +1,4 @@
-package com.open.appbase.adapter;
+package com.open.appbase.adapter.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @param <DT> the type parameter
  * @param <VH> the type parameter
  */
-public abstract class BaseListAdapter<DT, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BaseRecyclerListAdapter<DT, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     /**
      * The Data List
      */
@@ -20,7 +20,7 @@ public abstract class BaseListAdapter<DT, VH extends RecyclerView.ViewHolder> ex
     /**
      * Instantiates a new Base list adapter.
      */
-    public BaseListAdapter() {
+    public BaseRecyclerListAdapter() {
     }
 
     /**

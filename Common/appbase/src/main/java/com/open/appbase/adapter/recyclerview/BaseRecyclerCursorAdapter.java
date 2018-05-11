@@ -21,7 +21,7 @@ import android.widget.Filterable;
  * 2015/2/25        ZhuWenWu            1.0                    1.0
  * Why and What is modified:
  */
-public abstract class BaseAbstractRecycleCursorAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements Filterable,
+public abstract class BaseRecyclerCursorAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements Filterable,
         CursorFilter.CursorFilterClient {
 
     /**
@@ -86,7 +86,7 @@ public abstract class BaseAbstractRecycleCursorAdapter<VH extends RecyclerView.V
      *                responsiveness or even Application Not Responding errors.  As an alternative,
      *                use {@link android.app.LoaderManager} with a {@link android.content.CursorLoader}.
      */
-    public BaseAbstractRecycleCursorAdapter(Context context, Cursor c) {
+    public BaseRecyclerCursorAdapter(Context context, Cursor c) {
         this(context, c, FLAG_REGISTER_CONTENT_OBSERVER);
     }
 
@@ -98,7 +98,7 @@ public abstract class BaseAbstractRecycleCursorAdapter<VH extends RecyclerView.V
      * @param flags   Flags used to determine the behavior of the adapter;
      *                Currently it accept {@link #FLAG_REGISTER_CONTENT_OBSERVER}.
      */
-    public BaseAbstractRecycleCursorAdapter(Context context, Cursor c, int flags) {
+    public BaseRecyclerCursorAdapter(Context context, Cursor c, int flags) {
         init(context, c, flags);
     }
 

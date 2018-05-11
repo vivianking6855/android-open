@@ -14,7 +14,7 @@ import android.widget.Filter;
  * 2014/12/30        ZhuWenWu            1.0                    1.0
  * Why and What is modified:
  */
-public class CursorFilter extends Filter {
+class CursorFilter extends Filter {
     CursorFilterClient mClient;
 
     interface CursorFilterClient {
