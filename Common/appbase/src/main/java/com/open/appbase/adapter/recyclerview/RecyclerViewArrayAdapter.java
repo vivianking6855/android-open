@@ -5,7 +5,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static com.open.appbase.common.Const.LOG_TAG;
 
 public final class RecyclerViewArrayAdapter<T> extends BaseRecyclerViewArrayAdapter<T, RecyclerViewArrayAdapter.SimpleViewHolder> {
     private LayoutInflater mLayoutInflater;
@@ -37,7 +34,6 @@ public final class RecyclerViewArrayAdapter<T> extends BaseRecyclerViewArrayAdap
     @Override
     public void onBindViewHolder(RecyclerViewArrayAdapter.SimpleViewHolder holder, T item) {
         holder.tv.setText(item.toString());
-        Log.d(LOG_TAG, "onBindViewHolder " + item.toString());
     }
 
     @NonNull

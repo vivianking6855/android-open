@@ -10,7 +10,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 /**
  * The type Base permission activity.
@@ -26,8 +25,6 @@ import android.util.Log;
  * @author vivian
  */
 public abstract class BasePermissionActivity extends BaseActivity {
-    protected final static String TAG = "Permission";
-
     // normal dangerous permission request code
     private final static int PERMISSION_REQUEST_CODE_RECORD = 10000;
     // overlay permission for ALERT WINDOW
@@ -39,7 +36,7 @@ public abstract class BasePermissionActivity extends BaseActivity {
     // hint dialogue for never show
     private AlertDialog mNeverShowHintDlg;
     // never show hint strings
-    private static int[] neverShowRes;
+    private static String[] neverShowRes;
 
     /**
      * Get permissions string [ ].
@@ -83,9 +80,31 @@ public abstract class BasePermissionActivity extends BaseActivity {
     protected void writeSettingsGranted() {
     }
 
-    protected void setAlterDialogStrings(@StringRes int title, @StringRes int message,
+    /**
+     * Sets permission alter dialog with string ids
+     *
+     * @param title    the title
+     * @param message  the message
+     * @param positive the positive
+     * @param negative the negative
+     */
+    protected void setPermissionAlterDialog(@StringRes int title, @StringRes int message,
                                          @StringRes int positive, @StringRes int negative) {
-        neverShowRes = new int[]{title, message, positive, negative};
+        neverShowRes = new String[]{
+                getString(title),
+                getString(message),
+                getString(positive),
+                getString(negative)
+        };
+    }
+
+    /**
+     * Sets permission alter dialog with strings
+     *
+     * @param strs the strs
+     */
+    protected void setPermissionAlterDialog(String[] strs) {
+        neverShowRes = strs;
     }
 
     @Override
@@ -103,13 +122,10 @@ public abstract class BasePermissionActivity extends BaseActivity {
         }
 
         if (userNotGranted()) {// permission not granted
-            Log.d(TAG, "permission not granted");
             if (userChooseNeverShow()) {
-                Log.d(TAG, "user choose never show");
                 showNeverShowHintDialogue();
             } else {
                 if (!mSystemPermissionShowing) {
-                    Log.d(TAG, "show system permission dialogue");
                     // show system permission dialogue
                     mSystemPermissionShowing = true;
                     showSystemRequestDialog();
@@ -142,20 +158,16 @@ public abstract class BasePermissionActivity extends BaseActivity {
             case OVERLAY_PERMISSION_REQ_CODE:
                 if (!Settings.canDrawOverlays(this)) {
                     // SYSTEM_ALERT_WINDOW permission not granted...
-                    //Log.d(TAG, "DrawOverlays Permission was denied");
                     OverlayDeny();
                 } else {
                     // Already hold the SYSTEM_ALERT_WINDOW permission, do add view or something.
-                    //Log.d(TAG, "DrawOverlays Permission granted");
                     OverlayGranted();
                 }
                 break;
             case REQUEST_CODE_ASK_WRITE_SETTINGS:
                 if (!Settings.System.canWrite(this)) {
-                    //Log.d(TAG, "write settings Permission was denied");
                     writeSettingsDeny();
                 } else {
-                    //Log.d(TAG, "write settings Permission granted");
                     writeSettingsGranted();
                 }
                 break;
@@ -216,16 +228,16 @@ public abstract class BasePermissionActivity extends BaseActivity {
 
         mNeverShowHintDlg = new AlertDialog.Builder(BasePermissionActivity.this)
                 .setCancelable(false)
-                .setTitle(getString(neverShowRes[0]))
-                .setMessage(getString(neverShowRes[1]))
-                .setPositiveButton(getString(neverShowRes[2]), new DialogInterface.OnClickListener() {
+                .setTitle(neverShowRes[0])
+                .setMessage(neverShowRes[1])
+                .setPositiveButton(neverShowRes[2], new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // user choose never show,you could change your resolution here for your project
                         gotoSettingsAppDetail();
                     }
                 })
-                .setNegativeButton(getString(neverShowRes[3]), new DialogInterface.OnClickListener() {
+                .setNegativeButton(neverShowRes[3], new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         permissionDeny();
@@ -241,6 +253,9 @@ public abstract class BasePermissionActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * Request draw over lay.
+     */
     protected void requestDrawOverLay() {
         // no need to request permission before M
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -248,7 +263,6 @@ public abstract class BasePermissionActivity extends BaseActivity {
         }
 
         if (!Settings.canDrawOverlays(BasePermissionActivity.this)) {
-            Log.d(TAG, "can not DrawOverlays need requset permission");
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + BasePermissionActivity.this.getPackageName()));
             startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
@@ -258,6 +272,9 @@ public abstract class BasePermissionActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Request write settings.
+     */
     protected void requestWriteSettings() {
         // no need to request permission before M
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {

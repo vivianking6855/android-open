@@ -20,14 +20,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected Reference<FragmentActivity> mActivityRef;
 
-
-    /**
-     * New instance base fragment.
-     *
-     * @return the base fragment
-     */
-    protected abstract BaseFragment newInstance();
-
     /**
      * fragment layout.
      *

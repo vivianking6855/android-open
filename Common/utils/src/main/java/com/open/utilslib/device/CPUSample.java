@@ -105,7 +105,6 @@ public final class CPUSample {
         // parse cpuRate
         String[] cpuInfoArray = cpuRate.split(" ");
         if (cpuInfoArray.length < 9) {
-            Log.w(TAG, "parse cpu info not enough");
             return result;
         }
         long user = Long.parseLong(cpuInfoArray[2]);

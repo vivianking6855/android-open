@@ -17,7 +17,7 @@ public final class AppUtils {
      * get version code
      *
      * @param context the context
-     * @return version code
+     * @return version code, if fail will return -1
      */
     public static int getAppVersionCode(Context context) {
         try {
@@ -26,14 +26,14 @@ public final class AppUtils {
         } catch (PackageManager.NameNotFoundException e) {
             Log.w(TAG, "getAppVersionCode ex ", e);
         }
-        return 1;
+        return -1;
     }
 
     /**
      * get version name
      *
      * @param context the context
-     * @return version name
+     * @return version name, fail will return empty ""
      */
     public static String getAppVersionName(Context context) {
         try {
