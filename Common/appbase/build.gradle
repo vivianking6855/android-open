@@ -6,7 +6,7 @@ publish {
     userOrg = 'viviankingdou'// organization，初次注册需要到bintray.com创建一个
     groupId = 'com.open.appbase'// jcenter上的路径，用户导入的名称
     artifactId = 'appbase'// 项目名称
-    publishVersion = '1.0.180513'// 版本号
+    publishVersion = '1.0.180517'// 版本号
     desc = 'this is app basic library for android'// 描述，不重要
     website = 'http://vivianking6855.github.io'// 网站，最好有，不重要
 }
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 180513
-        versionName "1.0.180513"
+        versionCode 180517
+        versionName "1.0.180517"
     }
 
     buildTypes {
