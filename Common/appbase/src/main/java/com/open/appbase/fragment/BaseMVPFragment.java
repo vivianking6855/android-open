@@ -28,6 +28,12 @@ public abstract class BaseMVPFragment<V, T extends BasePresenter<V>> extends Bas
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachReference();
+    }
+
     /**
      * Create presenter t that extends {@link BasePresenter}
      *

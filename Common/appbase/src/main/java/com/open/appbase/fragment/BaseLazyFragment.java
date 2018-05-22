@@ -19,14 +19,12 @@ public abstract class BaseLazyFragment extends BaseFragment {
     private boolean isViewCreated;
     // if data load complete
     private boolean isDataLoadCompleted;
-    // if keep view
-    private boolean isKeepRootView = true;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // if need keep view and rootv iew not null, return it
-        if (mRootView != null && isKeepRootView) {
+        if (mRootView != null && isKeepRootView()) {
             isViewCreated = true;
             return mRootView;
         }
@@ -71,20 +69,16 @@ public abstract class BaseLazyFragment extends BaseFragment {
      *
      * @param completed the completed
      */
-    protected void setDataLoadCompleted(boolean completed) {
+    public void setDataLoadCompleted(boolean completed) {
         isDataLoadCompleted = completed;
     }
 
     /**
-     * if you keep, root view will not recreate if root view is not null.
-     * viewpager will keep current and before, after frament.
-     * if you keep is true, it will not recreate event frament detathed from activiey, because fragment object is still exit
-     *
-     * @param keep keep or not
+     * viewpager default will keep current and before, after these three fragments.
+     * if return true, it will not recreate event fragment detached from activity, because fragment object is still exit
+     * @return true : root view will not recreate if root view is not null.
      */
-    protected void setKeepRootView(boolean keep) {
-        isKeepRootView = keep;
-    }
+    protected abstract boolean isKeepRootView();
 
     @Override
     public void onDestroyView() {
