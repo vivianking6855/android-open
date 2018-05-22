@@ -78,7 +78,9 @@ public abstract class BaseLazyFragment extends BaseFragment {
      * if return true, it will not recreate event fragment detached from activity, because fragment object is still exit
      * @return true : root view will not recreate if root view is not null.
      */
-    protected abstract boolean isKeepRootView();
+    protected boolean isKeepRootView(){
+        return true;
+    }
 
     @Override
     public void onDestroyView() {
