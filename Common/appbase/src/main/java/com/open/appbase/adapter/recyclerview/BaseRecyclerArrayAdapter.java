@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class BaseRecyclerViewArrayAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BaseRecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     protected List<T> items;
 

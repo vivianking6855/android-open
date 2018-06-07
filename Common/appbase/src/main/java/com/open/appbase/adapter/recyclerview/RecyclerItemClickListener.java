@@ -9,6 +9,18 @@ import android.view.View;
 
 /**
  * The type Recycler item click listener.
+ * use it like
+ *  recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
+
+        @Override
+        public void onLongItemClick(View view, int position) {
+
+        }
+    }));
  */
 public final class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
 
