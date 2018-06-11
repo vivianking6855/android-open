@@ -10,6 +10,7 @@ import android.util.Log;
  * app utils, such as app version, memory, etc.
  */
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class AppUtils {
     private static final String TAG = "AppUtils";
 
@@ -36,6 +37,9 @@ public final class AppUtils {
      * @return version name, fail will return empty ""
      */
     public static String getAppVersionName(Context context) {
+        if (context == null) {
+            return "";
+        }
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return info.versionName;
